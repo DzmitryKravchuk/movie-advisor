@@ -14,7 +14,7 @@ import java.util.Date;
 public class AbstractEntity {
     @Column
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(updatable = false)
