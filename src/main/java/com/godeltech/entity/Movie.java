@@ -13,8 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
 
@@ -29,16 +29,18 @@ public class Movie extends AbstractEntity {
     private int releaseYear;
     @Column
     private String director;
+    @Column
+    private String description;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Role.class)
     @JsonManagedReference
     private Country country;
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinTable(name = "movie_genre", joinColumns = @JoinColumn(name = "movieId"), inverseJoinColumns = @JoinColumn(name = "genreId"))
-    private List <Genre> genreList;
-
+    private List<Genre> genreList;
+    @Transient
     private int avgSatisfactionGrade;
 
-   // @OneToMany(mappedBy = "movieUserEvaluation", fetch = FetchType.LAZY)
+    // @OneToMany(mappedBy = "movieUserEvaluation", fetch = FetchType.LAZY)
 //    private List<MovieUserEvaluation> evaluationList;
 }

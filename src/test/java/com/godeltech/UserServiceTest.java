@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserServiceTest extends AbstractCreationTest{
     @Test
-    public void createUserTest() {
-        final User firstUser = createNewUser();
-        User entityFromBase = userService.getById(firstUser.getId());
+    public void crudTest() {
+        final User entity = createNewUser();
+        User entityFromBase = userService.getById(entity.getId());
         assertNotNull(entityFromBase.getId());
-        assertEquals(firstUser.getUserName(), entityFromBase.getUserName());
-        userService.delete(firstUser.getId());
+        assertEquals(entity.getUserName(), entityFromBase.getUserName());
+        userService.delete(entity.getId());
     }
 }

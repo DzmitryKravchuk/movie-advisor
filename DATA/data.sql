@@ -1,6 +1,6 @@
-INSERT INTO country (id, country_name, created, updated) VALUES (1, 'США', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO country (id, country_name, created, updated) VALUES (2, 'Россия', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO country (id, country_name, created, updated) VALUES (3, 'Франция', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO country (country_name, created, updated) VALUES ('США', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO country (country_name, created, updated) VALUES ('Россия', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO country (country_name, created, updated) VALUES ('Франция', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
 
 INSERT INTO genre (genre_name, created, updated) VALUES ('Ужасы', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
 INSERT INTO genre (genre_name, created, updated) VALUES ('Комедия', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');

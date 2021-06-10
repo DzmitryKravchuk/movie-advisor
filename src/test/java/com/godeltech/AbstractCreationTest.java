@@ -2,8 +2,9 @@ package com.godeltech;
 
 import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
-import com.godeltech.entity.Movie;
 import com.godeltech.entity.User;
+import com.godeltech.service.CountryService;
+import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
 import com.godeltech.service.RoleService;
 import com.godeltech.service.UserService;
@@ -23,14 +24,18 @@ public class AbstractCreationTest {
     protected UserService userService;
     @Autowired
     protected MovieService movieService;
+    @Autowired
+    protected CountryService countryService;
+    @Autowired
+    protected GenreService genreService;
 
-    protected Integer getRandomInt() {
-        return RANDOM.nextInt(99999);
+    protected Integer getRandomInt(int bound) {
+        return RANDOM.nextInt(bound);
     }
 
     protected User createNewUser() {
         final User entity = new User();
-        entity.setUserName("User" + getRandomInt());
+        entity.setUserName("User" + getRandomInt(9999));
         entity.setPassword(entity.getUserName());
         entity.setRole(roleService.getById(1));
         userService.save(entity);
@@ -39,20 +44,15 @@ public class AbstractCreationTest {
 
     protected Country createNewCountry() {
         final Country entity = new Country();
-        //TO DO some action
+        entity.setCountryName("New Country"+ getRandomInt(9999));
+        countryService.save(entity);
         return entity;
     }
 
     protected Genre createNewGenre() {
         final Genre entity = new Genre();
-        //TO DO some action
+        entity.setGenreName("New Genre"+getRandomInt(99));
+        genreService.save(entity);
         return entity;
     }
-
-    protected Movie createNewMovie() {
-        final Movie entity = new Movie();
-        //TO DO some action
-        return entity;
-    }
-
 }
