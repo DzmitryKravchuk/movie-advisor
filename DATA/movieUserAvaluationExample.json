@@ -1,0 +1,1 @@
+{ "_class":"com.godeltech.entity.MovieUserEvaluation", "movieId": 5, "userId": 3, "satisfactionGrade": 5, "review": "Очень интересный фильм.Всем советую", "created": "2020-04-21T23:25:43.000Z",  "updated": "2020-04-21T23:25:43.000Z" }

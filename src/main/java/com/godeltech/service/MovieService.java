@@ -14,4 +14,8 @@ public interface MovieService {
     void delete(Integer id);
 
     void update(Movie entity, Integer id);
+
+    List<Movie> getAllMoviesByDirector(String myFavoriteDirector);
+
+    Movie getByIdContainsGenreCountry(Integer id);
 }

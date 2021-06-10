@@ -1,7 +1,7 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Country;
-import com.godeltech.exception.EntityNotFoundException;
+import com.godeltech.exception.ServiceEntityNotFoundException;
 import com.godeltech.exception.EntityUpdateNotMatchIdException;
 import com.godeltech.repository.CountryRepository;
 import com.godeltech.service.CountryService;
@@ -33,7 +33,7 @@ public class CountryServiceImpl implements CountryService {
     public Country getById(Integer id) {
         log.info("CountryServiceImpl get by id: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override

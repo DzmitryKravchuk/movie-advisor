@@ -1,7 +1,7 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.User;
-import com.godeltech.exception.EntityNotFoundException;
+import com.godeltech.exception.ServiceEntityNotFoundException;
 import com.godeltech.exception.EntityUpdateNotMatchIdException;
 import com.godeltech.repository.UserRepository;
 import com.godeltech.service.UserService;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public User getById(Integer id) {
         log.info("UserServiceImpl get by id: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override

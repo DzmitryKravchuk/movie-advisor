@@ -6,6 +6,7 @@ import com.godeltech.entity.User;
 import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
+import com.godeltech.service.MovieUserEvalService;
 import com.godeltech.service.RoleService;
 import com.godeltech.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class AbstractCreationTest {
     protected CountryService countryService;
     @Autowired
     protected GenreService genreService;
+    @Autowired
+    protected MovieUserEvalService mueService;
 
     protected Integer getRandomInt(int bound) {
         return RANDOM.nextInt(bound);

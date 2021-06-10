@@ -9,14 +9,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.List;
-
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -34,10 +31,9 @@ public class Movie extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Role.class)
     @JsonManagedReference
     private Country country;
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "movies", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonManagedReference
-    @JoinTable(name = "movie_genre", joinColumns = @JoinColumn(name = "movieId"), inverseJoinColumns = @JoinColumn(name = "genreId"))
-    private List<Genre> genreList;
+    private Set<Genre> genres;
     @Transient
     private int avgSatisfactionGrade;
 

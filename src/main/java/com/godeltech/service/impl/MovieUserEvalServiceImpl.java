@@ -1,7 +1,7 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.MovieUserEvaluation;
-import com.godeltech.exception.EntityNotFoundException;
+import com.godeltech.exception.ServiceEntityNotFoundException;
 import com.godeltech.exception.EntityUpdateNotMatchIdException;
 import com.godeltech.repository.MovieUserEvaluationRepository;
 import com.godeltech.service.MovieUserEvalService;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -33,7 +34,7 @@ public class MovieUserEvalServiceImpl implements MovieUserEvalService {
     public MovieUserEvaluation getById(String id) {
         log.info("MovieUserEvalServiceImpl get by id: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override
@@ -56,5 +57,12 @@ public class MovieUserEvalServiceImpl implements MovieUserEvalService {
             throw new EntityUpdateNotMatchIdException(" Object from request has index " + entity.getId() + " and doesnt match index from url " + id);
         }
         save(entity);
+    }
+
+    @Override
+    public Set<MovieUserEvaluation> getAllByMovieId(Integer movieId) {
+        log.info("MovieUserEvalServiceImpl getByMovieId with id: {}", movieId);
+        return repository.getAllByMovieId(movieId);
+
     }
 }

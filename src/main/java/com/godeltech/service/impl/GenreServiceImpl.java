@@ -1,7 +1,7 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Genre;
-import com.godeltech.exception.EntityNotFoundException;
+import com.godeltech.exception.ServiceEntityNotFoundException;
 import com.godeltech.exception.EntityUpdateNotMatchIdException;
 import com.godeltech.repository.GenreRepository;
 import com.godeltech.service.GenreService;
@@ -33,7 +33,7 @@ public class GenreServiceImpl implements GenreService {
     public Genre getById(Integer id) {
         log.info("GenreServiceImpl get by id: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override

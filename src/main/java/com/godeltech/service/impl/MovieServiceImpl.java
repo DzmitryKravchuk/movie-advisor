@@ -1,7 +1,7 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Movie;
-import com.godeltech.exception.EntityNotFoundException;
+import com.godeltech.exception.ServiceEntityNotFoundException;
 import com.godeltech.exception.EntityUpdateNotMatchIdException;
 import com.godeltech.repository.MovieRepository;
 import com.godeltech.service.MovieService;
@@ -33,7 +33,7 @@ public class MovieServiceImpl implements MovieService {
     public Movie getById(Integer id) {
         log.info("MovieServiceImpl get by id: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override
@@ -52,9 +52,25 @@ public class MovieServiceImpl implements MovieService {
     public void update(Movie entity, Integer id) {
         log.info("MovieServiceImpl update with id: {}", id);
         getById(id);
-        if (!entity.getId().equals(id)){
-            throw new EntityUpdateNotMatchIdException(" Object from request has index "+ entity.getId()+" and doesnt match index from url "+ id);
+        if (!entity.getId().equals(id)) {
+            throw new EntityUpdateNotMatchIdException(" Object from request has index " + entity.getId() + " and doesnt match index from url " + id);
         }
         save(entity);
+    }
+
+    @Override
+    public List<Movie> getAllMoviesByDirector(String myFavoriteDirector) {
+        log.info("MovieServiceImpl getAllMoviesByDirector with Director: {}", myFavoriteDirector);
+        return repository.findAllByDirectorContainingIgnoreCase(myFavoriteDirector);
+    }
+
+    @Override
+    public Movie getByIdContainsGenreCountry(Integer id) {
+        log.info("MovieServiceImpl get one ContainsGenreCountry by id: {}", id);
+        Movie entity = repository.getMovieById(id);
+        if (entity == null) {
+            throw new ServiceEntityNotFoundException(" Object with index " + id + " not found");
+        }
+        return entity;
     }
 }

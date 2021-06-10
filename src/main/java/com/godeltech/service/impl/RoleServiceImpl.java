@@ -1,7 +1,7 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Role;
-import com.godeltech.exception.EntityNotFoundException;
+import com.godeltech.exception.ServiceEntityNotFoundException;
 import com.godeltech.repository.RoleRepository;
 import com.godeltech.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,6 @@ public class RoleServiceImpl implements RoleService {
     public Role getById(Integer id) {
         log.info("RoleServiceImpl get by id: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
     }
 }
