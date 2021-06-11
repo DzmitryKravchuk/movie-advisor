@@ -2,7 +2,7 @@ package com.godeltech.service.impl;
 
 import com.godeltech.entity.Genre;
 import com.godeltech.exception.ServiceEntityNotFoundException;
-import com.godeltech.exception.EntityUpdateNotMatchIdException;
+import com.godeltech.exception.ServiceUpdateNotMatchIdException;
 import com.godeltech.repository.GenreRepository;
 import com.godeltech.service.GenreService;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class GenreServiceImpl implements GenreService {
         log.info("GenreServiceImpl update with id: {}", id);
         getById(id);
         if (!entity.getId().equals(id)){
-            throw new EntityUpdateNotMatchIdException(" Object from request has index "+ entity.getId()+" and doesnt match index from url "+ id);
+            throw new ServiceUpdateNotMatchIdException(" Object from request has index "+ entity.getId()+" and doesnt match index from url "+ id);
         }
         save(entity);
     }

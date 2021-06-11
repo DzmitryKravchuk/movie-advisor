@@ -28,7 +28,7 @@ public class Movie extends AbstractEntity {
     private String director;
     @Column
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Role.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Country.class)
     @JsonManagedReference
     private Country country;
     @ManyToMany(mappedBy = "movies", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
@@ -36,7 +36,6 @@ public class Movie extends AbstractEntity {
     private Set<Genre> genres;
     @Transient
     private int avgSatisfactionGrade;
-
-    // @OneToMany(mappedBy = "movieUserEvaluation", fetch = FetchType.LAZY)
-//    private List<MovieUserEvaluation> evaluationList;
+    @Transient
+    Set<MovieUserEvaluation> movieEvaluations;
 }

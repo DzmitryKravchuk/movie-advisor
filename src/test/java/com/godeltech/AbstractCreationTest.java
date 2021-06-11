@@ -2,6 +2,8 @@ package com.godeltech;
 
 import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
+import com.godeltech.entity.Movie;
+import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
 import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
@@ -14,6 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Transactional
 @SpringBootTest
@@ -56,6 +61,50 @@ public class AbstractCreationTest {
         final Genre entity = new Genre();
         entity.setGenreName("New Genre"+getRandomInt(99));
         genreService.save(entity);
+        return entity;
+    }
+
+    protected Movie createNewMovie() {
+        final Movie entity = new Movie();
+        entity.setTitle("New Movie" + getRandomInt(999));
+        entity.setDirector("New Director" + getRandomInt(999));
+        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
+        entity.setGenres(genres);
+        entity.setCountry(createNewCountry());
+        entity.setDescription("Description" + getRandomInt(99999));
+        movieService.save(entity);
+        return entity;
+    }
+
+    protected Movie createNewMovieWithDirector(String director) {
+        final Movie entity = new Movie();
+        entity.setTitle("New Movie" + getRandomInt(999));
+        entity.setDirector(director);
+        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
+        entity.setGenres(genres);
+        entity.setCountry(createNewCountry());
+        entity.setDescription("Description" + getRandomInt(99999));
+        movieService.save(entity);
+        return entity;
+    }
+
+    protected MovieUserEvaluation createNewMueWithRandomSatisfactionGrade(int movieId, int UserId) {
+        final MovieUserEvaluation entity = new MovieUserEvaluation();
+        entity.setMovieId(movieId);
+        entity.setUserId(UserId);
+        entity.setSatisfactionGrade(getRandomInt(5) + 1);
+        entity.setReview("Нечего сказать, смотри оценку");
+        mueService.save(entity);
+        return entity;
+    }
+
+    protected MovieUserEvaluation createNewMue(int movieId, int userId, int satisfactionGrade) {
+        final MovieUserEvaluation entity = new MovieUserEvaluation();
+        entity.setMovieId(movieId);
+        entity.setUserId(userId);
+        entity.setSatisfactionGrade(satisfactionGrade);
+        entity.setReview("Нечего сказать, смотри оценку");
+        mueService.save(entity);
         return entity;
     }
 }

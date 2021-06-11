@@ -2,7 +2,7 @@ package com.godeltech.service.impl;
 
 import com.godeltech.entity.Country;
 import com.godeltech.exception.ServiceEntityNotFoundException;
-import com.godeltech.exception.EntityUpdateNotMatchIdException;
+import com.godeltech.exception.ServiceUpdateNotMatchIdException;
 import com.godeltech.repository.CountryRepository;
 import com.godeltech.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class CountryServiceImpl implements CountryService {
         log.info("CountryServiceImpl update with id: {}", id);
         getById(id);
         if (!entity.getId().equals(id)){
-            throw new EntityUpdateNotMatchIdException(" Object from request has index "+ entity.getId()+" and doesnt match index from url "+ id);
+            throw new ServiceUpdateNotMatchIdException(" Object from request has index "+ entity.getId()+" and doesnt match index from url "+ id);
         }
         save(entity);
     }

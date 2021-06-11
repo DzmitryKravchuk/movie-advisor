@@ -22,7 +22,4 @@ public class User extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Role.class)
     @JsonManagedReference
     private Role role;
-
- //   @OneToMany(mappedBy = "movieUserEvaluation", fetch = FetchType.LAZY)
- //   private List<MovieUserEvaluation> evaluationList;
 }

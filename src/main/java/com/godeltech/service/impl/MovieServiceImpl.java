@@ -1,22 +1,27 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Movie;
+import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.exception.ServiceEntityNotFoundException;
-import com.godeltech.exception.EntityUpdateNotMatchIdException;
+import com.godeltech.exception.ServiceUpdateNotMatchIdException;
 import com.godeltech.repository.MovieRepository;
+import com.godeltech.repository.MovieUserEvaluationRepository;
 import com.godeltech.service.MovieService;
+import com.godeltech.utils.AvgSatisfactionGradeCalc;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
     private final MovieRepository repository;
+    private final MovieUserEvaluationRepository mueRepository;
 
     @Override
     public void save(Movie entity) {
@@ -53,7 +58,7 @@ public class MovieServiceImpl implements MovieService {
         log.info("MovieServiceImpl update with id: {}", id);
         getById(id);
         if (!entity.getId().equals(id)) {
-            throw new EntityUpdateNotMatchIdException(" Object from request has index " + entity.getId() + " and doesnt match index from url " + id);
+            throw new ServiceUpdateNotMatchIdException(" Object from request has index " + entity.getId() + " and doesnt match index from url " + id);
         }
         save(entity);
     }
@@ -66,11 +71,21 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getByIdContainsGenreCountry(Integer id) {
-        log.info("MovieServiceImpl get one ContainsGenreCountry by id: {}", id);
+        log.info("MovieServiceImpl get one containing Genre-Country by id: {}", id);
         Movie entity = repository.getMovieById(id);
         if (entity == null) {
             throw new ServiceEntityNotFoundException(" Object with index " + id + " not found");
         }
+        return entity;
+    }
+
+    @Override
+    public Movie getByIdFullInfo(Integer id) {
+        log.info("MovieServiceImpl get full info by id: {}", id);
+        Movie entity = getByIdContainsGenreCountry(id);
+        Set<MovieUserEvaluation> allByMovieId = mueRepository.getAllByMovieId(id);
+        entity.setMovieEvaluations(allByMovieId);
+        entity.setAvgSatisfactionGrade(AvgSatisfactionGradeCalc.calculate(allByMovieId));
         return entity;
     }
 }

@@ -18,4 +18,6 @@ public interface MovieService {
     List<Movie> getAllMoviesByDirector(String myFavoriteDirector);
 
     Movie getByIdContainsGenreCountry(Integer id);
+
+    Movie getByIdFullInfo(Integer id);
 }

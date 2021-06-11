@@ -10,4 +10,6 @@ import java.util.Set;
 public interface MovieUserEvaluationRepository extends MongoRepository<MovieUserEvaluation, String> {
     @Query("{ 'movieId' : ?0}")
     Set<MovieUserEvaluation> getAllByMovieId(Integer movieId);
+
+    MovieUserEvaluation findByMovieIdAndUserId(Integer movieId, Integer userId);
 }

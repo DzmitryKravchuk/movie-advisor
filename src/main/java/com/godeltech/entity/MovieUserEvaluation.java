@@ -11,8 +11,8 @@ import java.util.Date;
 public class MovieUserEvaluation {
     @Id
     private String id;
-    private int movieId;
-    private int userId;
+    private Integer movieId;
+    private Integer userId;
     private int satisfactionGrade;
     private String review;
     private Date created;

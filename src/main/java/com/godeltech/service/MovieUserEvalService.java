@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface MovieUserEvalService {
+    Integer MAX_GRADE = 5;
 
     void save(MovieUserEvaluation entity);
 

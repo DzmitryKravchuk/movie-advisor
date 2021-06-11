@@ -1,14 +1,10 @@
 package com.godeltech;
 
-import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 import com.godeltech.exception.ServiceEntityNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,49 +25,32 @@ public class MovieServiceTest extends AbstractCreationTest {
     public void findAllMoviesByDirectorTest() {
         final String myFavoriteDirector = "myFavoriteDirector";
         for (int i = 0; i < 10; i++) {
-            createNewMovie(myFavoriteDirector);
+            createNewMovieWithDirector(myFavoriteDirector);
         }
         List<Movie> movieListFromBase = movieService.getAllMoviesByDirector("favorite");
         assertEquals(movieListFromBase.size(), 10);
     }
 
     @Test
-    public void getMovieGenreCountryTest() {
+    public void getMovieFullInfoTest() {
+        // TO DO refactor test using getFull info
         final Movie entity = createNewMovie();
+        // TO DO create some more users create some more eval-s for them and new movie
+
         Movie entityFromBase = movieService.getByIdContainsGenreCountry(entity.getId());
+
         assertNotNull(entityFromBase.getId());
         assertEquals(entity.getGenres().size(), entityFromBase.getGenres().size());
         assertEquals(entity.getCountry(), entityFromBase.getCountry());
     }
 
     @Test
+    public void getAllMoviesFullInfoTest() {
+        // TO DO some action
+    }
+
+    @Test
     public void throwExceptionTest() {
-        assertThrows(ServiceEntityNotFoundException.class, () -> {
-            Movie entityFromBase = movieService.getByIdContainsGenreCountry(-1);
-        });
-    }
-
-    private Movie createNewMovie() {
-        final Movie entity = new Movie();
-        entity.setTitle("New Movie" + getRandomInt(999));
-        entity.setDirector("New Director" + getRandomInt(999));
-        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
-        entity.setGenres(genres);
-        entity.setCountry(createNewCountry());
-        entity.setDescription("Description" + getRandomInt(99999));
-        movieService.save(entity);
-        return entity;
-    }
-
-    private Movie createNewMovie(String director) {
-        final Movie entity = new Movie();
-        entity.setTitle("New Movie" + getRandomInt(999));
-        entity.setDirector(director);
-        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
-        entity.setGenres(genres);
-        entity.setCountry(createNewCountry());
-        entity.setDescription("Description" + getRandomInt(99999));
-        movieService.save(entity);
-        return entity;
+        assertThrows(ServiceEntityNotFoundException.class, () -> movieService.getByIdContainsGenreCountry(-1));
     }
 }
