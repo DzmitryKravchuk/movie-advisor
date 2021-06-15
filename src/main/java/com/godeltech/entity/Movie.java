@@ -1,9 +1,10 @@
 package com.godeltech.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,11 +14,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table
 public class Movie extends AbstractEntity {
     @Column
@@ -29,13 +35,41 @@ public class Movie extends AbstractEntity {
     @Column
     private String description;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Country.class)
-    @JsonManagedReference
+    @JsonIgnore
     private Country country;
-    @ManyToMany(mappedBy = "movies", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private Set<Genre> genres;
+    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "movies", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Genre> genres = new HashSet<>();
     @Transient
     private int avgSatisfactionGrade;
     @Transient
     Set<MovieUserEvaluation> movieEvaluations;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Movie movie = (Movie) o;
+        return releaseYear == movie.releaseYear && avgSatisfactionGrade == movie.avgSatisfactionGrade && title.equals(movie.title) && director.equals(movie.director) && description.equals(movie.description) && country.equals(movie.country) && Objects.equals(genres, movie.genres) && Objects.equals(movieEvaluations, movie.movieEvaluations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), title, releaseYear, director, description, country, genres, avgSatisfactionGrade, movieEvaluations);
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", releaseYear=" + releaseYear +
+                ", director='" + director + '\'' +
+                ", description='" + description + '\'' +
+                ", country=" + country.getCountryName() +
+                ", genres=" + genres.stream().map(Genre::getGenreName).collect(Collectors.toList()) +
+                ", avgSatisfactionGrade=" + avgSatisfactionGrade +
+                ", movieEvaluations=" + movieEvaluations +
+                '}';
+    }
 }

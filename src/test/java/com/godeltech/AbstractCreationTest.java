@@ -59,7 +59,7 @@ public class AbstractCreationTest {
 
     protected Genre createNewGenre() {
         final Genre entity = new Genre();
-        entity.setGenreName("New Genre"+getRandomInt(99));
+        entity.setGenreName("New Genre"+getRandomInt(999999));
         genreService.save(entity);
         return entity;
     }
@@ -80,6 +80,18 @@ public class AbstractCreationTest {
         final Movie entity = new Movie();
         entity.setTitle("New Movie" + getRandomInt(999));
         entity.setDirector(director);
+        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
+        entity.setGenres(genres);
+        entity.setCountry(createNewCountry());
+        entity.setDescription("Description" + getRandomInt(99999));
+        movieService.save(entity);
+        return entity;
+    }
+
+    protected Movie createNewMovieWithTitle(String title) {
+        final Movie entity = new Movie();
+        entity.setTitle(title);
+        entity.setDirector("Director"+getRandomInt(999));
         Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
         entity.setGenres(genres);
         entity.setCountry(createNewCountry());

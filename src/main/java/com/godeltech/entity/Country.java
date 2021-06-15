@@ -1,6 +1,6 @@
 package com.godeltech.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,6 +20,6 @@ public class Country extends AbstractEntity{
     private String countryName;
 
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Movie> movies;
 }

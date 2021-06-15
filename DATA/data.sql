@@ -19,21 +19,21 @@ INSERT INTO movie (title, release_year, director, description, country_id, creat
 INSERT INTO movie (title, release_year, director, description, country_id, created, updated) VALUES ('Географ глобус пропил', 2013, 'Александр Велединский', 'Молодой биолог Виктор Служкин от безденежья идет работать учителем географии в обычную пермскую школу. Он борется, а потом и дружит с учениками, конфликтует с завучем, ведет десятиклассников в поход - сплавляться по реке. Еще он пьет с друзьями вино, пытается ужиться с женой и водит в детский сад маленькую дочку. Он просто живет...', 2, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
 INSERT INTO movie (title, release_year, director, description, country_id, created, updated) VALUES ('Елки', 2010, 'Тимур Бекмамбетов', 'Новогодние события происходят в 11 городах: Калининграде, Казани, Перми, Уфе, Бавлах, Екатеринбурге, Красноярске, Якутске, Новосибирске, Санкт-Петербурге и Москве. Герои фильма — таксист и поп-дива, бизнесмен и актер, сноубордист и лыжник, студент и пенсионерка, пожарный и директриса, вор и милиционер, гастарбайтер и президент России. Все они оказываются в самый канун Нового года в очень непростой ситуации, выйти из которой им поможет только чудо… или Теория шести рукопожатий, согласно которой каждый человек на земле знает другого через шесть знакомых.', 2, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
 
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (1, 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (1, 4, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (2, 3, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (3, 2, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (3, 4, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (4, 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (4, 5, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (5, 3, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (6, 5, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (7, 5, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (7, 4, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (8, 5, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (8, 4, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (9, 3, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO movie_genre (movie_id, genre_id, created, updated) VALUES (10, 2, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (1, 1);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (1, 4);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (2, 3);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (3, 2);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (3, 4);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (4, 1);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (4, 5);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (5, 3);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (6, 5);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (7, 5);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (7, 4);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (8, 5);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (8, 4);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (9, 3);
+INSERT INTO movie_genre (movie_id, genre_id) VALUES (10, 2);
 
 INSERT INTO role (id, role_name, created, updated) VALUES (1, 'ROLE_USER', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
 INSERT INTO role (id, role_name, created, updated) VALUES (2, 'ROLE_ADMIN', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');

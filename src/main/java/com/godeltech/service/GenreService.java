@@ -9,6 +9,8 @@ public interface GenreService {
 
     Genre getById(Integer id);
 
+    Genre getGenreWithMoviesByGenreId(Integer genreId);
+
     List<Genre> getAll();
 
     void delete(Integer id);

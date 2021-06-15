@@ -1,15 +1,19 @@
 package com.godeltech;
 
+import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
+import com.godeltech.entity.User;
 import com.godeltech.exception.ServiceEntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+@Slf4j
 public class MovieServiceTest extends AbstractCreationTest {
     @Test
     public void crudTest() {
@@ -24,29 +28,94 @@ public class MovieServiceTest extends AbstractCreationTest {
     @Test
     public void findAllMoviesByDirectorTest() {
         final String myFavoriteDirector = "myFavoriteDirector";
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 3; i++) {
             createNewMovieWithDirector(myFavoriteDirector);
         }
         List<Movie> movieListFromBase = movieService.getAllMoviesByDirector("favorite");
+        assertEquals(movieListFromBase.size(), 3);
+    }
+
+    @Test
+    public void findMoviesByTitleTest() {
+        final String myFavoriteTitle = "myFavoriteTitle";
+        for (int i = 0; i < 10; i++) {
+            createNewMovieWithTitle(myFavoriteTitle);
+        }
+        List<Movie> movieListFromBase = movieService.getMoviesByTitle("favorite");
+        assertEquals(movieListFromBase.size(), 10);
+    }
+   @Test
+    public void findMoviesByGenreTest1() {
+        Genre genre = createNewGenre();
+        final String myFavorite = "Триллер";
+        genre.setGenreName(myFavorite);
+        genreService.update(genre, genre.getId());
+        for (int i = 0; i < 10; i++) {
+            Movie movie = createNewMovie();
+            Set<Genre> genres = movie.getGenres();
+            genres.add(genre);
+            movie.setGenres(genres);
+            movieService.update(movie,movie.getId());
+         }
+        Set<Movie> movieListFromBase = movieService.getMoviesWithGenreByGenreId(genre.getId());
+        assertEquals(movieListFromBase.size(), 10);
+    }
+
+   @Test
+    public void findMoviesByGenreTest2() {
+        Genre genre = createNewGenre();
+        final String myFavorite = "XXX";
+        genre.setGenreName(myFavorite);
+        genreService.update(genre, genre.getId());
+        for (int i = 0; i < 10; i++) {
+            Movie movie = createNewMovie();
+            Set<Genre> genres = movie.getGenres();
+            genres.add(genre);
+            movie.setGenres(genres);
+            movieService.update(movie,movie.getId());
+          }
+        List<Movie> movieListFromBase = movieService.getMoviesWithGenreAndCountryByGenre(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
     }
 
     @Test
     public void getMovieFullInfoTest() {
-        // TO DO refactor test using getFull info
-        final Movie entity = createNewMovie();
-        // TO DO create some more users create some more eval-s for them and new movie
+        final Movie movie = createNewMovie();
+        final User user1 = createNewUser();
+        final User user2 = createNewUser();
+        createNewMue(movie.getId(), user1.getId(), 5);
+        createNewMue(movie.getId(), user2.getId(), 2);
 
-        Movie entityFromBase = movieService.getByIdContainsGenreCountry(entity.getId());
+        Movie entityFromBase = movieService.getByIdFullInfo(movie.getId());
 
         assertNotNull(entityFromBase.getId());
-        assertEquals(entity.getGenres().size(), entityFromBase.getGenres().size());
-        assertEquals(entity.getCountry(), entityFromBase.getCountry());
+        assertEquals(movie.getMovieEvaluations().size(), entityFromBase.getMovieEvaluations().size());
+        assertEquals(entityFromBase.getAvgSatisfactionGrade(), 3);
     }
 
     @Test
     public void getAllMoviesFullInfoTest() {
-        // TO DO some action
+        final int initCount = movieService.getAll().size();
+        final Movie movie1 = createNewMovie();
+        final Movie movie2 = createNewMovie();
+        final Movie movie3 = createNewMovie();
+        final User user1 = createNewUser();
+        final User user2 = createNewUser();
+        createNewMueWithRandomSatisfactionGrade(movie1.getId(), user1.getId());
+        createNewMueWithRandomSatisfactionGrade(movie1.getId(), user2.getId());
+
+        createNewMueWithRandomSatisfactionGrade(movie2.getId(), user1.getId());
+        createNewMueWithRandomSatisfactionGrade(movie2.getId(), user2.getId());
+
+        createNewMueWithRandomSatisfactionGrade(movie3.getId(), user1.getId());
+        createNewMueWithRandomSatisfactionGrade(movie3.getId(), user2.getId());
+
+        List<Movie> entitiesFromBase = movieService.getAllFullInfo();
+
+        assert (entitiesFromBase.contains(movie1));
+        assertEquals(entitiesFromBase.size(), initCount + 3);
+        assertEquals(entitiesFromBase.get(initCount + 1).getMovieEvaluations().size(), 2);
+        assert (entitiesFromBase.get(initCount + 2).getAvgSatisfactionGrade() > 0);
     }
 
     @Test
