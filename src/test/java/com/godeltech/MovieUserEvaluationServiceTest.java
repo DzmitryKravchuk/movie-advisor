@@ -4,7 +4,7 @@ import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
 import com.godeltech.exception.ServiceMovieUserEvaluationPersistanceException;
-import com.godeltech.service.MovieUserEvalService;
+import com.godeltech.service.MovieUserEvaluationService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +56,7 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
         final User user = createNewUser();
         final Movie movie = createNewMovie();
         assertThrows(ServiceMovieUserEvaluationPersistanceException.class, ()
-                -> createNewMue(movie.getId(), user.getId(), MovieUserEvalService.MAX_GRADE + 1));
+                -> createNewMue(movie.getId(), user.getId(), MovieUserEvaluationService.MAX_GRADE + 1));
     }
 
 }

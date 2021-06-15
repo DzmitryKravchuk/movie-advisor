@@ -38,7 +38,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre getGenreWithMoviesByGenreId(Integer genreId) {
-        log.info("GenreServiceImpl get by id: {}", genreId);
+        log.info("GenreServiceImpl getGenreWithMoviesByGenreId: {}", genreId);
         return repository.findOneById(genreId);
     }
 

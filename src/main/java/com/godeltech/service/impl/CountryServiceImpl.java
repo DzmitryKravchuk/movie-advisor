@@ -31,9 +31,15 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country getById(Integer id) {
-        log.info("CountryServiceImpl get by id: {}", id);
+        log.info("CountryServiceImpl getById: {}", id);
         return repository.findById(id).
                 orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
+    }
+
+    @Override
+    public Country getCountryWithMoviesByCountryId(Integer id) {
+        log.info("CountryServiceImpl getCountryWithMoviesByCountryId: {}", id);
+        return repository.findOneById(id);
     }
 
     @Override

@@ -9,6 +9,8 @@ public interface CountryService {
 
     Country getById(Integer id);
 
+    Country getCountryWithMoviesByCountryId(Integer id);
+
     List<Country> getAll();
 
     void delete(Integer id);

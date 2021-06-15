@@ -8,7 +8,7 @@ import com.godeltech.entity.User;
 import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
-import com.godeltech.service.MovieUserEvalService;
+import com.godeltech.service.MovieUserEvaluationService;
 import com.godeltech.service.RoleService;
 import com.godeltech.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class AbstractCreationTest {
     @Autowired
     protected GenreService genreService;
     @Autowired
-    protected MovieUserEvalService mueService;
+    protected MovieUserEvaluationService mueService;
 
     protected Integer getRandomInt(int bound) {
         return RANDOM.nextInt(bound);
@@ -50,16 +50,16 @@ public class AbstractCreationTest {
         return entity;
     }
 
-    protected Country createNewCountry() {
+    protected Country createNewCountry(String countryName) {
         final Country entity = new Country();
-        entity.setCountryName("New Country"+ getRandomInt(9999));
+        entity.setCountryName(countryName);
         countryService.save(entity);
         return entity;
     }
 
-    protected Genre createNewGenre() {
+    protected Genre createNewGenre(String genreName) {
         final Genre entity = new Genre();
-        entity.setGenreName("New Genre"+getRandomInt(999999));
+        entity.setGenreName(genreName);
         genreService.save(entity);
         return entity;
     }
@@ -68,9 +68,11 @@ public class AbstractCreationTest {
         final Movie entity = new Movie();
         entity.setTitle("New Movie" + getRandomInt(999));
         entity.setDirector("New Director" + getRandomInt(999));
-        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
+        Set<Genre> genres = Stream.of(createNewGenre("New Genre" + getRandomInt(999999)),
+                createNewGenre("New Genre" + getRandomInt(999999))).collect(Collectors.toSet());
         entity.setGenres(genres);
-        entity.setCountry(createNewCountry());
+        entity.setReleaseYear(getRandomInt(20) + 1995);
+        entity.setCountry(createNewCountry("New Country" + getRandomInt(9999)));
         entity.setDescription("Description" + getRandomInt(99999));
         movieService.save(entity);
         return entity;
@@ -80,9 +82,10 @@ public class AbstractCreationTest {
         final Movie entity = new Movie();
         entity.setTitle("New Movie" + getRandomInt(999));
         entity.setDirector(director);
-        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
+        Set<Genre> genres = Stream.of(createNewGenre("New Genre" + getRandomInt(999999)),
+                createNewGenre("New Genre" + getRandomInt(999999))).collect(Collectors.toSet());
         entity.setGenres(genres);
-        entity.setCountry(createNewCountry());
+        entity.setCountry(createNewCountry("New Country" + getRandomInt(9999)));
         entity.setDescription("Description" + getRandomInt(99999));
         movieService.save(entity);
         return entity;
@@ -91,10 +94,11 @@ public class AbstractCreationTest {
     protected Movie createNewMovieWithTitle(String title) {
         final Movie entity = new Movie();
         entity.setTitle(title);
-        entity.setDirector("Director"+getRandomInt(999));
-        Set<Genre> genres = Stream.of(createNewGenre(), createNewGenre()).collect(Collectors.toSet());
+        entity.setDirector("Director" + getRandomInt(999));
+        Set<Genre> genres = Stream.of(createNewGenre("New Genre" + getRandomInt(999999)),
+                createNewGenre("New Genre" + getRandomInt(999999))).collect(Collectors.toSet());
         entity.setGenres(genres);
-        entity.setCountry(createNewCountry());
+        entity.setCountry(createNewCountry("New Country" + getRandomInt(9999)));
         entity.setDescription("Description" + getRandomInt(99999));
         movieService.save(entity);
         return entity;

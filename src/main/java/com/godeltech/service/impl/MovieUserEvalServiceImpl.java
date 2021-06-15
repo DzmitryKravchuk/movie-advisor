@@ -7,7 +7,7 @@ import com.godeltech.exception.ServiceUpdateNotMatchIdException;
 import com.godeltech.repository.MovieRepository;
 import com.godeltech.repository.MovieUserEvaluationRepository;
 import com.godeltech.repository.UserRepository;
-import com.godeltech.service.MovieUserEvalService;
+import com.godeltech.service.MovieUserEvaluationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MovieUserEvalServiceImpl implements MovieUserEvalService {
+public class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
     private final MovieUserEvaluationRepository repository;
     private final UserRepository userRepository;
     private final MovieRepository movieRepository;

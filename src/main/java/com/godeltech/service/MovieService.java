@@ -16,7 +16,7 @@ public interface MovieService {
 
     void update(Movie entity, Integer id);
 
-    List<Movie> getAllMoviesByDirector(String favorite);
+    List<Movie> getMoviesByDirectorFullInfo(String favorite);
 
     Movie getByIdContainsGenreCountry(Integer id);
 
@@ -27,6 +27,8 @@ public interface MovieService {
     List<Movie> getMoviesByTitle(String favorite);
 
     List<Movie> getMoviesWithGenreAndCountryByGenre(String favorite);
+
+    Set<Movie> getMoviesWithGenreAndCountryByCountry(String favorite);
 
     Set<Movie> getMoviesWithGenreByGenreId(Integer genreId);
 }

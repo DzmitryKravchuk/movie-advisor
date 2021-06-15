@@ -1,7 +1,9 @@
 package com.godeltech;
 
+import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
+import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
 import com.godeltech.exception.ServiceEntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @Slf4j
 public class MovieServiceTest extends AbstractCreationTest {
     @Test
@@ -29,10 +32,15 @@ public class MovieServiceTest extends AbstractCreationTest {
     public void findAllMoviesByDirectorTest() {
         final String myFavoriteDirector = "myFavoriteDirector";
         for (int i = 0; i < 3; i++) {
-            createNewMovieWithDirector(myFavoriteDirector);
+            Movie movie = createNewMovieWithDirector(myFavoriteDirector);
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
         }
-        List<Movie> movieListFromBase = movieService.getAllMoviesByDirector("favorite");
+        List<Movie> movieListFromBase = movieService.getMoviesByDirectorFullInfo("favorite");
         assertEquals(movieListFromBase.size(), 3);
+        assertEquals(movieListFromBase.get(0).getMovieEvaluations().size(), 2);
+        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 1);
+        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() <= 5);
     }
 
     @Test
@@ -44,9 +52,10 @@ public class MovieServiceTest extends AbstractCreationTest {
         List<Movie> movieListFromBase = movieService.getMoviesByTitle("favorite");
         assertEquals(movieListFromBase.size(), 10);
     }
-   @Test
+
+    @Test
     public void findMoviesByGenreTest1() {
-        Genre genre = createNewGenre();
+        Genre genre = createNewGenre("New Genre" + getRandomInt(999999));
         final String myFavorite = "Триллер";
         genre.setGenreName(myFavorite);
         genreService.update(genre, genre.getId());
@@ -55,26 +64,37 @@ public class MovieServiceTest extends AbstractCreationTest {
             Set<Genre> genres = movie.getGenres();
             genres.add(genre);
             movie.setGenres(genres);
-            movieService.update(movie,movie.getId());
-         }
+            movieService.update(movie, movie.getId());
+        }
         Set<Movie> movieListFromBase = movieService.getMoviesWithGenreByGenreId(genre.getId());
         assertEquals(movieListFromBase.size(), 10);
     }
 
-   @Test
+    @Test
     public void findMoviesByGenreTest2() {
-        Genre genre = createNewGenre();
         final String myFavorite = "XXX";
-        genre.setGenreName(myFavorite);
-        genreService.update(genre, genre.getId());
+        Genre genre = createNewGenre(myFavorite);
         for (int i = 0; i < 10; i++) {
             Movie movie = createNewMovie();
             Set<Genre> genres = movie.getGenres();
             genres.add(genre);
             movie.setGenres(genres);
-            movieService.update(movie,movie.getId());
-          }
+            movieService.update(movie, movie.getId());
+        }
         List<Movie> movieListFromBase = movieService.getMoviesWithGenreAndCountryByGenre(myFavorite);
+        assertEquals(movieListFromBase.size(), 10);
+    }
+
+    @Test
+    public void findMoviesByCountryTest() {
+        final String myFavorite = "Беларусь";
+        Country country = createNewCountry(myFavorite);
+        for (int i = 0; i < 10; i++) {
+            Movie movie = createNewMovie();
+            movie.setCountry(country);
+            movieService.update(movie, movie.getId());
+        }
+        Set<Movie> movieListFromBase = movieService.getMoviesWithGenreAndCountryByCountry(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
     }
 

@@ -1,14 +1,16 @@
 package com.godeltech.service.impl;
 
+import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.exception.ServiceEntityNotFoundException;
 import com.godeltech.exception.ServiceUpdateNotMatchIdException;
 import com.godeltech.repository.MovieRepository;
-import com.godeltech.repository.MovieUserEvaluationRepository;
+import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
+import com.godeltech.service.MovieUserEvaluationService;
 import com.godeltech.utils.AvgSatisfactionGradeCalc;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +28,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
     private final MovieRepository repository;
-    private final MovieUserEvaluationRepository mueRepository;
+    private final MovieUserEvaluationService mueService;
     private final GenreService genreService;
+    private final CountryService countryService;
 
     @Override
     public void save(Movie entity) {
@@ -37,11 +40,17 @@ public class MovieServiceImpl implements MovieService {
         if (entity.getId() == null) {
             entity.setCreated(currentDate);
         }
-        refreshMovieSetsForGenres(entity);
+        refreshMovieSetForGenres(entity);
+        refreshMovieSetForCountry(entity);
         repository.save(entity);
     }
 
-    private void refreshMovieSetsForGenres(Movie entity) {
+    private void refreshMovieSetForCountry(Movie entity) {
+        Set<Movie> moviesForCountry = getMoviesWithCountryByCountryId(entity.getCountry().getId());
+        moviesForCountry.add(entity);
+    }
+
+    private void refreshMovieSetForGenres(Movie entity) {
         for (Genre gen :
                 entity.getGenres()) {
             Set<Movie> moviesForGenre = getMoviesWithGenreByGenreId(gen.getId());
@@ -79,9 +88,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllMoviesByDirector(String myFavoriteDirector) {
+    public List<Movie> getMoviesByDirectorFullInfo(String myFavoriteDirector) {
         log.info("MovieServiceImpl getAllMoviesByDirector with Director: {}", myFavoriteDirector);
-        return repository.findAllByDirectorContainingIgnoreCase(myFavoriteDirector);
+        List<Movie> justMoviesByDirector = repository.findAllByDirectorContainingIgnoreCase(myFavoriteDirector);
+        return fillMoviesWithEvaluations(justMoviesByDirector,mueService.getAll());
     }
 
     @Override
@@ -98,7 +108,7 @@ public class MovieServiceImpl implements MovieService {
     public Movie getByIdFullInfo(Integer id) {
         log.info("MovieServiceImpl get full info by id: {}", id);
         Movie entity = getByIdContainsGenreCountry(id);
-        Set<MovieUserEvaluation> allByMovieId = mueRepository.getAllByMovieId(id);
+        Set<MovieUserEvaluation> allByMovieId = mueService.getAllByMovieId(id);
         entity.setMovieEvaluations(allByMovieId);
         entity.setAvgSatisfactionGrade(AvgSatisfactionGradeCalc.calculate(allByMovieId));
         return entity;
@@ -108,30 +118,46 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getAllFullInfo() {
         log.info("MovieServiceImpl get All with full info");
         List<Movie> movieList = repository.getAllWithCountryAndGenre();
-        List<MovieUserEvaluation> mueList = mueRepository.findAll();
+        List<MovieUserEvaluation> mueList = mueService.getAll();
         return fillMoviesWithEvaluations(movieList, mueList);
     }
 
     @Override
     public List<Movie> getMoviesByTitle(String favorite) {
-        log.info("MovieServiceImpl getAllMoviesByTitle with Title: {}", favorite);
+        log.info("MovieServiceImpl getAllMoviesByTitle: {}", favorite);
         return repository.findAllByTitleContainingIgnoreCase(favorite);
     }
 
     @Override
     public List<Movie> getMoviesWithGenreAndCountryByGenre(String favorite) {
-        log.info("MovieServiceImpl getAllMoviesByGenre with Genre: {}", favorite);
+        log.info("MovieServiceImpl getMoviesWithGenreAndCountryByGenre: {}", favorite);
         return repository.GetMoviesWithGenreAndCountryByGenre(favorite);
     }
 
     @Override
+    public Set<Movie> getMoviesWithGenreAndCountryByCountry(String favorite) {
+        log.info("MovieServiceImpl getMoviesWithGenreAndCountryByCountry: {}", favorite);
+        return repository.GetMoviesWithGenreAndCountryByCountry(favorite);
+    }
+
+    @Override
     public Set<Movie> getMoviesWithGenreByGenreId(Integer genreId) {
-        log.info("MovieServiceImpl getMoviesByGenre with GenreId: {}", genreId);
+        log.info("MovieServiceImpl getMoviesWithGenreByGenreId: {}", genreId);
         Genre genre = genreService.getGenreWithMoviesByGenreId(genreId);
         if (genre == null) {
             throw new ServiceEntityNotFoundException(" Genre with id " + genreId + " not found");
         } else {
             return genre.getMovies();
+        }
+    }
+
+    private Set<Movie> getMoviesWithCountryByCountryId(Integer id) {
+        log.info("MovieServiceImpl getMoviesWithCountryByCountryId: {}", id);
+        Country country = countryService.getCountryWithMoviesByCountryId(id);
+        if (country == null) {
+            throw new ServiceEntityNotFoundException(" Genre with id " + id + " not found");
+        } else {
+            return country.getMovies();
         }
     }
 

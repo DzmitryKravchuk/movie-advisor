@@ -5,7 +5,7 @@ import com.godeltech.entity.MovieUserEvaluation;
 import java.util.List;
 import java.util.Set;
 
-public interface MovieUserEvalService {
+public interface MovieUserEvaluationService {
     Integer MAX_GRADE = 5;
 
     void save(MovieUserEvaluation entity);
