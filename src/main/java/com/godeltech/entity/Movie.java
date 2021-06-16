@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class Movie extends AbstractEntity {
+public final class Movie extends AbstractEntity {
     @Column
     private String title;
     @Column
@@ -34,7 +34,7 @@ public class Movie extends AbstractEntity {
     private String director;
     @Column
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Country.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Country country;
     @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "movies", fetch = FetchType.LAZY)
@@ -43,15 +43,17 @@ public class Movie extends AbstractEntity {
     @Transient
     private int avgSatisfactionGrade;
     @Transient
-    Set<MovieUserEvaluation> movieEvaluations;
+    private Set<MovieUserEvaluation> movieEvaluations;
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Movie movie = (Movie) o;
-        return releaseYear == movie.releaseYear && avgSatisfactionGrade == movie.avgSatisfactionGrade && title.equals(movie.title) && director.equals(movie.director) && description.equals(movie.description) && country.equals(movie.country) && Objects.equals(genres, movie.genres) && Objects.equals(movieEvaluations, movie.movieEvaluations);
+        return releaseYear == movie.releaseYear && avgSatisfactionGrade == movie.avgSatisfactionGrade
+                && title.equals(movie.title) && director.equals(movie.director)
+                && description.equals(movie.description) && country.equals(movie.country) && Objects.equals(genres, movie.genres) && Objects.equals(movieEvaluations, movie.movieEvaluations);
     }
 
     @Override
@@ -61,15 +63,15 @@ public class Movie extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", releaseYear=" + releaseYear +
-                ", director='" + director + '\'' +
-                ", description='" + description + '\'' +
-                ", country=" + country.getCountryName() +
-                ", genres=" + genres.stream().map(Genre::getGenreName).collect(Collectors.toList()) +
-                ", avgSatisfactionGrade=" + avgSatisfactionGrade +
-                ", movieEvaluations=" + movieEvaluations +
-                '}';
+        return "Movie{"
+                + "title='" + title + '\''
+                + ", releaseYear=" + releaseYear
+                + ", director='" + director + '\''
+                + ", description='" + description + '\''
+                + ", country=" + country.getCountryName()
+                + ", genres=" + genres.stream().map(Genre::getGenreName).collect(Collectors.toList())
+                + ", avgSatisfactionGrade=" + avgSatisfactionGrade
+                + ", movieEvaluations=" + movieEvaluations
+                + '}';
     }
 }

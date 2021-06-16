@@ -1,8 +1,8 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Country;
-import com.godeltech.exception.ServiceEntityNotFoundException;
-import com.godeltech.exception.ServiceUpdateNotMatchIdException;
+import com.godeltech.exception.ResourceNotFoundException;
+import com.godeltech.exception.UpdateNotMatchIdException;
 import com.godeltech.repository.CountryRepository;
 import com.godeltech.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CountryServiceImpl implements CountryService {
+public final class CountryServiceImpl implements CountryService {
     private final CountryRepository repository;
 
     @Override
-    public void save(Country entity) {
+    public void save(final Country entity) {
         log.info("CountryServiceImpl save {}", entity);
         Date currentDate = new Date();
         entity.setUpdated(currentDate);
@@ -30,14 +30,14 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Country getById(Integer id) {
+    public Country getById(final Integer id) {
         log.info("CountryServiceImpl getById: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override
-    public Country getCountryWithMoviesByCountryId(Integer id) {
+    public Country getCountryWithMoviesByCountryId(final Integer id) {
         log.info("CountryServiceImpl getCountryWithMoviesByCountryId: {}", id);
         return repository.findOneById(id);
     }
@@ -49,17 +49,18 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(final Integer id) {
         log.info("CountryServiceImpl delete by id: {}", id);
         repository.deleteById(id);
     }
 
     @Override
-    public void update(Country entity, Integer id) {
+    public void update(final Country entity, final Integer id) {
         log.info("CountryServiceImpl update with id: {}", id);
         getById(id);
-        if (!entity.getId().equals(id)){
-            throw new ServiceUpdateNotMatchIdException(" Object from request has index "+ entity.getId()+" and doesnt match index from url "+ id);
+        if (!entity.getId().equals(id)) {
+            throw new UpdateNotMatchIdException(" Object from request has index "
+                    + entity.getId() + " and doesnt match index from url " + id);
         }
         save(entity);
     }

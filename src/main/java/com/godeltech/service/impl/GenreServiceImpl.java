@@ -1,8 +1,8 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Genre;
-import com.godeltech.exception.ServiceEntityNotFoundException;
-import com.godeltech.exception.ServiceUpdateNotMatchIdException;
+import com.godeltech.exception.ResourceNotFoundException;
+import com.godeltech.exception.UpdateNotMatchIdException;
 import com.godeltech.repository.GenreRepository;
 import com.godeltech.service.GenreService;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GenreServiceImpl implements GenreService {
+public final class GenreServiceImpl implements GenreService {
     private final GenreRepository repository;
 
     @Override
-    public void save(Genre entity) {
+    public void save(final Genre entity) {
         log.info("GenreServiceImpl save {}", entity);
         Date currentDate = new Date();
         entity.setUpdated(currentDate);
@@ -30,17 +30,26 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(Integer id) {
+    public Genre getById(final Integer id) {
         log.info("GenreServiceImpl get by id: {}", id);
-        return repository.findById(id).
-                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override
-    public Genre getGenreWithMoviesByGenreId(Integer genreId) {
+    public Genre getGenreWithMoviesByGenreId(final Integer genreId) {
         log.info("GenreServiceImpl getGenreWithMoviesByGenreId: {}", genreId);
-        return repository.findOneById(genreId);
+        return repository.findOneById(genreId)
+                .orElseThrow(() -> new ResourceNotFoundException(" Object with index " + genreId + " not found"));
     }
+
+    @Override
+    public Genre getGenreByGenreName(final String genreName) {
+        log.info(" getGenreByGenreName: {}", genreName);
+        return repository.findOneByGenreName(genreName)
+                .orElseThrow(() -> new ResourceNotFoundException(" Object with name " + genreName + " not found"));
+    }
+
 
     @Override
     public List<Genre> getAll() {
@@ -49,17 +58,18 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(final Integer id) {
         log.info("GenreServiceImpl delete by id: {}", id);
         repository.deleteById(id);
     }
 
     @Override
-    public void update(Genre entity, Integer id) {
+    public void update(final Genre entity, final Integer id) {
         log.info("GenreServiceImpl update with id: {}", id);
         getById(id);
-        if (!entity.getId().equals(id)){
-            throw new ServiceUpdateNotMatchIdException(" Object from request has index "+ entity.getId()+" and doesnt match index from url "+ id);
+        if (!entity.getId().equals(id)) {
+            throw new UpdateNotMatchIdException(" Object from request has index "
+                    + entity.getId() + " and doesnt match index from url " + id);
         }
         save(entity);
     }

@@ -1,5 +1,6 @@
 package com.godeltech.repository;
 
+import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,18 +21,9 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @Query("SELECT m FROM Movie m")
     List<Movie> getAllWithCountryAndGenre();
 
-    @Query(value = "SELECT * FROM movie m " +
-            "INNER JOIN movie_genre m_g ON m.id = m_g.movie_id " +
-            "INNER JOIN genre g ON g.id = m_g.genre_id " +
-            "INNER JOIN country c ON c.id = m.country_id " +
-            "WHERE g.genre_name = ?1",nativeQuery = true)
-    List<Movie> GetMoviesWithGenreAndCountryByGenre(String genreName);
+    @EntityGraph(attributePaths = {"country", "genres"})
+    List<Movie> getAllByGenresIn(Set<Genre> genres);
 
-    @Query(value = "SELECT * FROM movie m " +
-            "INNER JOIN movie_genre m_g ON m.id = m_g.movie_id " +
-            "INNER JOIN genre g ON g.id = m_g.genre_id " +
-            "INNER JOIN country c ON c.id = m.country_id " +
-            "WHERE c.country_name = ?1"
-            ,nativeQuery = true)
-    Set<Movie> GetMoviesWithGenreAndCountryByCountry(String countryName);
+    @EntityGraph(attributePaths = {"country", "genres"})
+    Set<Movie> getAllByCountryCountryName(String countryName);
 }

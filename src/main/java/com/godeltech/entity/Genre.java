@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @Data
 @Table
-public class Genre extends AbstractEntity {
+public final class Genre extends AbstractEntity {
     @Column
     private String genreName;
 
@@ -31,7 +31,7 @@ public class Genre extends AbstractEntity {
     private Set<Movie> movies = new HashSet<>();
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;

@@ -24,11 +24,11 @@ public interface MovieService {
 
     List<Movie> getAllFullInfo();
 
-    List<Movie> getMoviesByTitle(String favorite);
+    List<Movie> getMoviesByTitleFullInfo(String favorite);
 
-    List<Movie> getMoviesWithGenreAndCountryByGenre(String favorite);
+    List<Movie> getMoviesByGenreFullInfo(String favorite);
 
-    Set<Movie> getMoviesWithGenreAndCountryByCountry(String favorite);
+    List<Movie> getMoviesByCountryFullInfo(String favorite);
 
     Set<Movie> getMoviesWithGenreByGenreId(Integer genreId);
 }

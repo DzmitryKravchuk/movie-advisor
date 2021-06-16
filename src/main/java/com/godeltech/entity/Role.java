@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @Table
-public class Role extends  AbstractEntity{
+public class Role extends AbstractEntity {
     @Column
     private String roleName;
 }

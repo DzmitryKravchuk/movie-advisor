@@ -11,6 +11,8 @@ public interface GenreService {
 
     Genre getGenreWithMoviesByGenreId(Integer genreId);
 
+    Genre getGenreByGenreName(String genreName);
+
     List<Genre> getAll();
 
     void delete(Integer id);

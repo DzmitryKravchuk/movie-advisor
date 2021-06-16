@@ -3,9 +3,8 @@ package com.godeltech;
 import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
-import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
-import com.godeltech.exception.ServiceEntityNotFoundException;
+import com.godeltech.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +38,9 @@ public class MovieServiceTest extends AbstractCreationTest {
         List<Movie> movieListFromBase = movieService.getMoviesByDirectorFullInfo("favorite");
         assertEquals(movieListFromBase.size(), 3);
         assertEquals(movieListFromBase.get(0).getMovieEvaluations().size(), 2);
-        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 1);
+        assertNotNull(movieListFromBase.get(0).getCountry());
+        assert (movieListFromBase.get(0).getGenres().size() >= 1);
+        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 0);
         assert (movieListFromBase.get(0).getAvgSatisfactionGrade() <= 5);
     }
 
@@ -47,10 +48,17 @@ public class MovieServiceTest extends AbstractCreationTest {
     public void findMoviesByTitleTest() {
         final String myFavoriteTitle = "myFavoriteTitle";
         for (int i = 0; i < 10; i++) {
-            createNewMovieWithTitle(myFavoriteTitle);
+            Movie movie = createNewMovieWithTitle(myFavoriteTitle);
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
         }
-        List<Movie> movieListFromBase = movieService.getMoviesByTitle("favorite");
+        List<Movie> movieListFromBase = movieService.getMoviesByTitleFullInfo("favorite");
         assertEquals(movieListFromBase.size(), 10);
+        assertEquals(movieListFromBase.get(0).getMovieEvaluations().size(), 2);
+        assertNotNull(movieListFromBase.get(0).getCountry());
+        assert (movieListFromBase.get(0).getGenres().size() >= 1);
+        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 0);
+        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() <= 5);
     }
 
     @Test
@@ -80,12 +88,19 @@ public class MovieServiceTest extends AbstractCreationTest {
             genres.add(genre);
             movie.setGenres(genres);
             movieService.update(movie, movie.getId());
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
         }
-        List<Movie> movieListFromBase = movieService.getMoviesWithGenreAndCountryByGenre(myFavorite);
+        List<Movie> movieListFromBase = movieService.getMoviesByGenreFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
+        assertEquals(movieListFromBase.iterator().next().getMovieEvaluations().size(), 2);
+        assertNotNull(movieListFromBase.iterator().next().getCountry());
+        assert (movieListFromBase.iterator().next().getGenres().size() >= 1);
+        assert (movieListFromBase.iterator().next().getAvgSatisfactionGrade() >= 0);
+        assert (movieListFromBase.iterator().next().getAvgSatisfactionGrade() <= 5);
     }
 
-    @Test
+     @Test
     public void findMoviesByCountryTest() {
         final String myFavorite = "Беларусь";
         Country country = createNewCountry(myFavorite);
@@ -93,9 +108,16 @@ public class MovieServiceTest extends AbstractCreationTest {
             Movie movie = createNewMovie();
             movie.setCountry(country);
             movieService.update(movie, movie.getId());
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
+            createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
         }
-        Set<Movie> movieListFromBase = movieService.getMoviesWithGenreAndCountryByCountry(myFavorite);
+        List<Movie> movieListFromBase = movieService.getMoviesByCountryFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
+        assertEquals(movieListFromBase.get(0).getMovieEvaluations().size(), 2);
+        assertNotNull(movieListFromBase.get(0).getCountry());
+        assert (movieListFromBase.get(0).getGenres().size() >= 1);
+        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 0);
+        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() <= 5);
     }
 
     @Test
@@ -140,6 +162,6 @@ public class MovieServiceTest extends AbstractCreationTest {
 
     @Test
     public void throwExceptionTest() {
-        assertThrows(ServiceEntityNotFoundException.class, () -> movieService.getByIdContainsGenreCountry(-1));
+        assertThrows(ResourceNotFoundException.class, () -> movieService.getByIdContainsGenreCountry(-1));
     }
 }

@@ -15,21 +15,22 @@ import java.util.Set;
 @Entity
 @Data
 @Table
-public class Country extends AbstractEntity{
+public final class Country extends AbstractEntity {
     @Column
     private String countryName;
 
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Movie> movies= new HashSet<>();
+    private Set<Movie> movies = new HashSet<>();
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Country country = (Country) o;
-        return countryName.equals(country.countryName) && Objects.equals(movies, country.movies);
+        return countryName.equals(country.countryName)
+                && Objects.equals(movies, country.movies);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.entity.Role;
-import com.godeltech.exception.ServiceEntityNotFoundException;
+import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.repository.RoleRepository;
 import com.godeltech.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService {
+public final class RoleServiceImpl implements RoleService {
     private final RoleRepository repository;
 
     @Override
-    public Role getById(Integer id) {
+    public Role getById(final Integer id) {
         log.info("RoleServiceImpl get by id: {}", id);
         return repository.findById(id).
-                orElseThrow(() -> new ServiceEntityNotFoundException(" Object with index " + id + " not found"));
+                orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
     }
 }
