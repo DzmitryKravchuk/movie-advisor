@@ -7,6 +7,7 @@ import com.godeltech.repository.UserRepository;
 import com.godeltech.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public final class UserServiceImpl implements UserService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void save(final User entity) {
@@ -25,6 +27,7 @@ public final class UserServiceImpl implements UserService {
         entity.setUpdated(currentDate);
         if (entity.getId() == null) {
             entity.setCreated(currentDate);
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         }
         repository.save(entity);
     }
