@@ -17,6 +17,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    protected void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
@@ -24,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/", "/resources/**").permitAll()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/user/*").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/registration").anonymous()
                 .antMatchers("/movies/*").permitAll()
                 .and()
@@ -33,14 +43,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").defaultSuccessUrl("/").permitAll()
                 .and()
                 .logout().permitAll().logoutSuccessUrl("/");
-    }
-
-    @Autowired
-    protected void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
-    @Bean
-    public PasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

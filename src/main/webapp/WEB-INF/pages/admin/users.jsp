@@ -14,21 +14,16 @@
         <thead>
         <th>ID</th>
         <th>UserName</th>
-        <th>Password</th>
         <th>Roles</th>
         </thead>
         <c:forEach items="${allUsers}" var="user">
             <tr>
                 <td>${user.id}</td>
                 <td>${user.userName}</td>
-                <td>${user.password}</td>
+                <td>${user.role.roleName} </td>
                 <td>
-                    <c:forEach items="${user.roles}" var="role">${role.name}; </c:forEach>
-                </td>
-                <td>
-                    <form action="${pageContext.request.contextPath}/admin" method="post">
+                    <form action="${pageContext.request.contextPath}/admin/users" method="post">
                         <input type="hidden" name="userId" value="${user.id}"/>
-                        <input type="hidden" name="action" value="delete"/>
                         <button type="submit">Delete</button>
                     </form>
 

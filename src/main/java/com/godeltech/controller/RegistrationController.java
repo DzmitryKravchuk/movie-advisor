@@ -1,7 +1,6 @@
 package com.godeltech.controller;
 
 import com.godeltech.dto.RegistrationRequest;
-import com.godeltech.entity.User;
 import com.godeltech.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -30,7 +29,7 @@ public final class RegistrationController {
             return "registration";
         }
         registrationService.registerUser(regRequest);
-        return "/";
+        return "redirect:/login";
     }
 }
 

@@ -19,7 +19,7 @@
         <h4><a href="/logout">Выйти</a></h4>
     </sec:authorize>
     <h4><a href="/movies">Фильмы (все пользователи)</a></h4>
-    <h4><a href="/admin">Пользователи (только админ)</a></h4>
+    <h4><a href="/admin/users">Пользователи (только админ)</a></h4>
 </div>
 </body>
 </html>
