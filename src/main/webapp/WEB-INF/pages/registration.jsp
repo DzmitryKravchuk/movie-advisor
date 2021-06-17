@@ -6,24 +6,24 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Регистрация</title>
+    <title>Registration</title>
 </head>
 
 <body>
 <div>
     <form:form method="POST" modelAttribute="regRequest">
-        <h2>Регистрация</h2>
+        <h2>Registration form</h2>
         <div>
-            <form:input type="text" path="login" placeholder="Логин"
+            <form:input type="text" path="login" placeholder="login"
                         autofocus="true" required="true"/>
         </div>
         <div>
-            <form:input type="password" path="password" placeholder="Пароль" required="true"/>
+            <form:input type="password" path="password" placeholder="password" required="true"/>
         </div>
 
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit">Submit</button>
     </form:form>
-    <a href="/">Главная</a>
+    <a href="/">Go home</a>
 </div>
 </body>
 </html>

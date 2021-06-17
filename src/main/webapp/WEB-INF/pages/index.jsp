@@ -5,21 +5,21 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Главная</title>
+    <title>Home page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 <div>
     <h3>Hello ${pageContext.request.userPrincipal.name}</h3>
     <sec:authorize access="!isAuthenticated()">
-        <h4><a href="/login">Войти</a></h4>
-        <h4><a href="/registration">Зарегистрироваться</a></h4>
+        <h4><a href="/login">Log in</a></h4>
+        <h4><a href="/registration">Register</a></h4>
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
-        <h4><a href="/logout">Выйти</a></h4>
+        <h4><a href="/logout">Log out</a></h4>
     </sec:authorize>
-    <h4><a href="/movies">Фильмы (все пользователи)</a></h4>
-    <h4><a href="/admin/users">Пользователи (только админ)</a></h4>
+    <h4><a href="/movies">Movies (available for all users)</a></h4>
+    <h4><a href="/admin/users">Users (available for admin only)</a></h4>
 </div>
 </body>
 </html>

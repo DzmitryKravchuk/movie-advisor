@@ -20,7 +20,7 @@ public final class AdminController {
     }
 
     @PostMapping("/admin/users")
-    public String deleteUser(@RequestParam(required = true, defaultValue = "") final Integer userId,
+    public String deleteUser(@RequestParam(defaultValue = "") final Integer userId,
                              final Model model) {
             userService.delete(userId);
         return "redirect:/admin/users";

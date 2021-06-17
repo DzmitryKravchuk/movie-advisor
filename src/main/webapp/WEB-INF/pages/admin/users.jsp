@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Log in with your account</title>
+    <title>Complete users list</title>
     <meta charset="utf-8">
 </head>
 
@@ -14,16 +14,16 @@
         <thead>
         <th>ID</th>
         <th>UserName</th>
-        <th>Roles</th>
+        <th>Role</th>
         </thead>
-        <c:forEach items="${allUsers}" var="user">
+        <c:forEach items="${allUsers}" var="movie">
             <tr>
-                <td>${user.id}</td>
-                <td>${user.userName}</td>
-                <td>${user.role.roleName} </td>
+                <td>${movie.id}</td>
+                <td>${movie.userName}</td>
+                <td>${movie.role.roleName} </td>
                 <td>
                     <form action="${pageContext.request.contextPath}/admin/users" method="post">
-                        <input type="hidden" name="userId" value="${user.id}"/>
+                        <input type="hidden" name="userId" value="${movie.id}"/>
                         <button type="submit">Delete</button>
                     </form>
 
@@ -32,7 +32,7 @@
             </tr>
         </c:forEach>
     </table>
-    <a href="/">Главная</a>
+    <a href="/">Go home</a>
 </div>
 </body>
 </html>

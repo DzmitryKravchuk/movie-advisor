@@ -1,10 +1,12 @@
 package com.godeltech;
 
+import com.godeltech.dto.MovieDTO;
 import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
+import com.godeltech.utils.MovieDtoConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -152,12 +154,11 @@ public class MovieServiceTest extends AbstractCreationTest {
         createNewMueWithRandomSatisfactionGrade(movie3.getId(), user1.getId());
         createNewMueWithRandomSatisfactionGrade(movie3.getId(), user2.getId());
 
-        List<Movie> entitiesFromBase = movieService.getAllFullInfo();
+        List<MovieDTO> entitiesFromBase = movieService.getAllFullInfo();
 
-        assert (entitiesFromBase.contains(movie1));
+        assert (entitiesFromBase.contains(MovieDtoConverter.convertToDTO(movie1)));
         assertEquals(entitiesFromBase.size(), initCount + 3);
-        assertEquals(entitiesFromBase.get(initCount + 1).getMovieEvaluations().size(), 2);
-        assert (entitiesFromBase.get(initCount + 2).getAvgSatisfactionGrade() > 0);
+        assert (entitiesFromBase.get(initCount + 2).getRating() > 0);
     }
 
     @Test

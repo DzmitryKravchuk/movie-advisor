@@ -10,13 +10,13 @@
 </sec:authorize>
 <div>
     <form method="POST" action="/login">
-        <h2>Вход в систему</h2>
+        <h2>Entering the system</h2>
         <div>
-            <input name="username" type="text" placeholder="Логин"
+            <input name="username" type="text" placeholder="login"
                    autofocus="true"/>
-            <input name="password" type="password" placeholder="Пароль"/>
+            <input name="password" type="password" placeholder="password"/>
             <button type="submit">Log In</button>
-            <h4><a href="/registration">Зарегистрироваться</a></h4>
+            <h4><a href="/registration">Register</a></h4>
         </div>
     </form>
 </div>

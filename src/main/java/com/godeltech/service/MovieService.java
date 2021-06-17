@@ -1,5 +1,6 @@
 package com.godeltech.service;
 
+import com.godeltech.dto.MovieDTO;
 import com.godeltech.entity.Movie;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface MovieService {
 
     Movie getByIdFullInfo(Integer id);
 
-    List<Movie> getAllFullInfo();
+    List<MovieDTO> getAllFullInfo();
 
     List<Movie> getMoviesByTitleFullInfo(String favorite);
 

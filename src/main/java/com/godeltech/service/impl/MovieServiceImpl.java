@@ -1,5 +1,6 @@
 package com.godeltech.service.impl;
 
+import com.godeltech.dto.MovieDTO;
 import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
@@ -12,6 +13,7 @@ import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
 import com.godeltech.service.MovieUserEvaluationService;
 import com.godeltech.utils.AvgSatisfactionGradeCalc;
+import com.godeltech.utils.MovieDtoConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -117,11 +120,12 @@ public final class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllFullInfo() {
+    public List<MovieDTO> getAllFullInfo() {
         log.info("MovieServiceImpl get All with full info");
-        List<Movie> movieList = repository.getAllWithCountryAndGenre();
+        List<Movie> justMoviesWithCountryAndGenre = repository.getAllWithCountryAndGenre();
         List<MovieUserEvaluation> mueList = mueService.getAll();
-        return fillMoviesWithEvaluations(movieList, mueList);
+        List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesWithCountryAndGenre, mueList);
+        return movieListWithEval.stream().map(MovieDtoConverter::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
