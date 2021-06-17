@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +20,9 @@ public final class HomeController {
     }
 
     @GetMapping("/")
-    public String start() {
-        return "login";
-    }
+   public String start() {
+       return "index";
+   }
 
     @GetMapping(value = "/logout")
     public String logoutPage(final HttpServletRequest request, final HttpServletResponse response) {

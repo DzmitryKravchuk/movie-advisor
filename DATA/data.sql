@@ -38,7 +38,7 @@ INSERT INTO movie_genre (movie_id, genre_id) VALUES (10, 2);
 INSERT INTO role (id, role_name, created, updated) VALUES (1, 'ROLE_USER', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
 INSERT INTO role (id, role_name, created, updated) VALUES (2, 'ROLE_ADMIN', '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
 
-INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('user1', 'user1', 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('user2', 'user2', 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('user3', 'user3', 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
-INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('admin', 'admin', 2, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('user1', '$2a$10$J6ZWSGGyUQIA893JGbHsVemFwIpdizD12UAt4uRphC7fvAD2vorZO', 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('user2', '$2a$10$lIn7TgjRgZpMp9TLmY4A5ewpoUap/6JAzKkCoT6hKJRcWgQ9YzRXe', 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('user3', '$2a$10$42ptArm8DjcBKCdWg0uIvuEi9iHwd82Grsym2Clfwncsx0GZA5F86', 1, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');
+INSERT INTO user_account (user_name, password, role_id, created, updated) VALUES ('admin', '$2a$10$7QtCze4RXQx/XHnrOJ8viOlS6vN8rZDU3U29WYfbcmrbuG.owj2ui', 2, '2021-01-23 16:44:04.117', '2021-01-23 16:44:04.117');

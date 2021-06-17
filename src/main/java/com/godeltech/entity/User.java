@@ -19,7 +19,7 @@ public class User extends AbstractEntity {
     private String userName;
     @Column
     private String password;
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Role.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Role.class)
     @JsonManagedReference
     private Role role;
 }
