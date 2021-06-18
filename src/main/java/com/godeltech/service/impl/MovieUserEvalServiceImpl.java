@@ -87,7 +87,7 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
     }
 
     @Override
-    public Set<MovieUserEvaluation> getAllByMovieId(final Integer movieId) {
+    public List<MovieUserEvaluation> getAllByMovieId(final Integer movieId) {
         log.info("MovieUserEvalServiceImpl getByMovieId with id: {}", movieId);
         return repository.getAllByMovieId(movieId);
 

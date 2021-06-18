@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public final class Movie extends AbstractEntity {
     @Transient
     private int avgSatisfactionGrade;
     @Transient
-    private Set<MovieUserEvaluation> movieEvaluations;
+    private List<MovieUserEvaluation> movieEvaluations;
 
     @Override
     public boolean equals(final Object o) {

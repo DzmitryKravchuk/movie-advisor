@@ -18,7 +18,7 @@
     <sec:authorize access="isAuthenticated()">
         <h4><a href="/logout">Log out</a></h4>
     </sec:authorize>
-    <h4><a href="/movies">Movies (available for all users)</a></h4>
+    <h4><a href="/movie/movies">Movies (available for all users)</a></h4>
     <h4><a href="/admin/users">Users (available for admin only)</a></h4>
 </div>
 </body>

@@ -130,11 +130,11 @@ public class MovieServiceTest extends AbstractCreationTest {
         createNewMue(movie.getId(), user1.getId(), 5);
         createNewMue(movie.getId(), user2.getId(), 2);
 
-        Movie entityFromBase = movieService.getByIdFullInfo(movie.getId());
+        MovieDTO entityFromBase = movieService.getByIdFullInfo(movie.getId());
 
         assertNotNull(entityFromBase.getId());
-        assertEquals(movie.getMovieEvaluations().size(), entityFromBase.getMovieEvaluations().size());
-        assertEquals(entityFromBase.getAvgSatisfactionGrade(), 3);
+        assertEquals(movie.getMovieEvaluations().size(), entityFromBase.getEvaluations().size());
+        assertEquals(entityFromBase.getRating(), 3);
     }
 
     @Test

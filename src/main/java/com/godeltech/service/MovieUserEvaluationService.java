@@ -18,5 +18,5 @@ public interface MovieUserEvaluationService {
 
     void update(MovieUserEvaluation entity, String id);
 
-    Set<MovieUserEvaluation> getAllByMovieId(Integer movieId);
+    List<MovieUserEvaluation> getAllByMovieId(Integer movieId);
 }

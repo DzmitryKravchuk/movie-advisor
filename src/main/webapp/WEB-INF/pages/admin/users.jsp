@@ -11,11 +11,9 @@
 <body>
 <div>
     <table>
-        <thead>
         <th>ID</th>
         <th>UserName</th>
         <th>Role</th>
-        </thead>
         <c:forEach items="${allUsers}" var="movie">
             <tr>
                 <td>${movie.id}</td>
@@ -32,7 +30,7 @@
             </tr>
         </c:forEach>
     </table>
-    <a href="/">Go home</a>
+    <a href="${pageContext.request.contextPath}/">Go home</a>
 </div>
 </body>
 </html>

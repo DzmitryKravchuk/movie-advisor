@@ -21,7 +21,7 @@ public interface MovieService {
 
     Movie getByIdContainsGenreCountry(Integer id);
 
-    Movie getByIdFullInfo(Integer id);
+    MovieDTO getByIdFullInfo(Integer id);
 
     List<MovieDTO> getAllFullInfo();
 

@@ -2,10 +2,10 @@ package com.godeltech.utils;
 
 import com.godeltech.entity.MovieUserEvaluation;
 
-import java.util.Set;
+import java.util.List;
 
 public class AvgSatisfactionGradeCalc {
-    public static int calculate(final Set<MovieUserEvaluation> allEvalByMovieId) {
+    public static int calculate(final List<MovieUserEvaluation> allEvalByMovieId) {
         return allEvalByMovieId.stream().map(MovieUserEvaluation::getSatisfactionGrade)
                 .reduce(new ImmutableAverage(0, 0),
                 ImmutableAverage::accept,

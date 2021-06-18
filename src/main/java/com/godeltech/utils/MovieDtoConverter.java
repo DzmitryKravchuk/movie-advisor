@@ -16,7 +16,10 @@ public class MovieDtoConverter {
                 .collect(Collectors.toSet()));
         dto.setDirector(movie.getDirector());
         dto.setTitle(movie.getTitle());
+        dto.setDescription(movie.getDescription());
         dto.setReleaseYear(movie.getReleaseYear());
+
+
         return dto;
     }
 }

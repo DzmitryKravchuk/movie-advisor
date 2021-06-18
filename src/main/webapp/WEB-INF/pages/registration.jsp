@@ -23,7 +23,7 @@
 
         <button type="submit">Submit</button>
     </form:form>
-    <a href="/">Go home</a>
+    <a href="${pageContext.request.contextPath}/">Go home</a>
 </div>
 </body>
 </html>
