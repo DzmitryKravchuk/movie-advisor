@@ -22,12 +22,9 @@ public final class Genre extends AbstractEntity {
     @Column
     private String genreName;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "genres", fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinTable(name = "movie_genre",
-            joinColumns = {@JoinColumn(name = "genreId")},
-            inverseJoinColumns = {@JoinColumn(name = "movieId")}
-    )
+    //  @JoinTable(name = "movie_genre", joinColumns = {@JoinColumn(name = "genreId")}, inverseJoinColumns = {@JoinColumn(name = "movieId")})
     private Set<Movie> movies = new HashSet<>();
 
     @Override

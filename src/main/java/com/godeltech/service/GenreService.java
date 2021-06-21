@@ -18,4 +18,6 @@ public interface GenreService {
     void delete(Integer id);
 
     void update(Genre entity, Integer id);
+
+    void deleteAll();
 }

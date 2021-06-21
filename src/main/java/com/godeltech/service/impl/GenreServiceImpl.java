@@ -73,4 +73,10 @@ public final class GenreServiceImpl implements GenreService {
         }
         save(entity);
     }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll");
+        repository.deleteAll();
+    }
 }

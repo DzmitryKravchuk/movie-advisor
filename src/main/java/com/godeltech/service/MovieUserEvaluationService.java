@@ -1,14 +1,14 @@
 package com.godeltech.service;
 
+import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.entity.MovieUserEvaluation;
 
 import java.util.List;
-import java.util.Set;
 
 public interface MovieUserEvaluationService {
     Integer MAX_GRADE = 5;
 
-    void save(MovieUserEvaluation entity);
+    void save(EvaluationRequest entity);
 
     MovieUserEvaluation getById(String id);
 
@@ -16,7 +16,13 @@ public interface MovieUserEvaluationService {
 
     void delete(String id);
 
-    void update(MovieUserEvaluation entity, String id);
+    void deleteEvaluationsByMovieId(Integer movieId);
+
+    void update(EvaluationRequest entity, String id);
 
     List<MovieUserEvaluation> getAllByMovieId(Integer movieId);
+
+    MovieUserEvaluation getByMovieIdAndByUserId(Integer id, Integer id1);
+
+    void deleteAll();
 }

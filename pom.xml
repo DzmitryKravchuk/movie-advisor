@@ -84,6 +84,11 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>5.2.0.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

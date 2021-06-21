@@ -18,7 +18,7 @@ public final class UserController {
     @PostMapping("/user/evaluateMovie")
     public String evaluation(@ModelAttribute("evalRequest") @Valid final EvaluationRequest evalRequest, final Model model) {
         //TODO save evaluation
-
+        mueService.save(evalRequest);
         return "redirect:/movie/movies";
     }
 }

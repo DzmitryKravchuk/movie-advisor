@@ -3,11 +3,15 @@ package com.godeltech.service.impl;
 import com.godeltech.dto.RegistrationRequest;
 import com.godeltech.dto.UserDTO;
 import com.godeltech.entity.User;
+import com.godeltech.exception.NotUniqueLoginException;
 import com.godeltech.service.RegistrationService;
 import com.godeltech.service.RoleService;
 import com.godeltech.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +22,20 @@ public final class RegistrationServiceImpl implements RegistrationService {
     @Override
     public UserDTO registerUser(final RegistrationRequest registrationRequest) {
         User u = new User();
+        validate(registrationRequest);
         u.setPassword(registrationRequest.getPassword());
         u.setUserName(registrationRequest.getLogin());
         u.setRole(roleService.getById(1));
         userService.save(u);
         return new UserDTO(u.getId());
+    }
+
+    private void validate(final RegistrationRequest registrationRequest) {
+        final String login = registrationRequest.getLogin();
+        List<User> users = userService.getAll();
+        List<String> registeredUserLogins = users.stream().map(User::getUserName).collect(Collectors.toList());
+        if (registeredUserLogins.contains(login)) {
+            throw new NotUniqueLoginException("login must be unique");
+        }
     }
 }

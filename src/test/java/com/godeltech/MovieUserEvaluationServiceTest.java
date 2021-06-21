@@ -4,8 +4,9 @@ import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
+import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.service.MovieUserEvaluationService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,10 +19,10 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
         final User user = createNewUser();
         final Movie movie = createNewMovie();
         final MovieUserEvaluation entity = createNewMueWithRandomSatisfactionGrade(movie.getId(), user.getId());
-        MovieUserEvaluation entityFromBase = mueService.getById(entity.getId());
+        MovieUserEvaluation entityFromBase = mueService.getByMovieIdAndByUserId(movie.getId(), user.getId());
         assertNotNull(entityFromBase.getId());
         assertEquals(entity.getReview(), entityFromBase.getReview());
-        mueService.delete(entity.getId());
+        mueService.delete(entityFromBase.getId());
     }
 
     @Test
@@ -37,7 +38,7 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
 
     @Test
     public void throwExceptionTest() {
-        assertThrows(MovieUserEvaluationPersistenceException.class, () -> createNewMueWithRandomSatisfactionGrade(-1, -1));
+        assertThrows(ResourceNotFoundException.class, () -> createNewMueWithRandomSatisfactionGrade(-1, 1));
     }
 
     @Test

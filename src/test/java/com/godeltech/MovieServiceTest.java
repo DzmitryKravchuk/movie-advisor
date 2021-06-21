@@ -8,7 +8,7 @@ import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.utils.MovieDtoConverter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Set;
@@ -133,7 +133,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         MovieDTO entityFromBase = movieService.getByIdFullInfo(movie.getId());
 
         assertNotNull(entityFromBase.getId());
-        assertEquals(movie.getMovieEvaluations().size(), entityFromBase.getEvaluations().size());
+        assertEquals(mueService.getAllByMovieId(movie.getId()).size(), entityFromBase.getEvaluations().size());
         assertEquals(entityFromBase.getRating(), 3);
     }
 
@@ -154,9 +154,11 @@ public class MovieServiceTest extends AbstractCreationTest {
         createNewMueWithRandomSatisfactionGrade(movie3.getId(), user1.getId());
         createNewMueWithRandomSatisfactionGrade(movie3.getId(), user2.getId());
 
+        MovieDTO movieFromBase = movieService.getByIdFullInfo(movie1.getId());
+
         List<MovieDTO> entitiesFromBase = movieService.getAllFullInfo();
 
-        assert (entitiesFromBase.contains(MovieDtoConverter.convertToDTO(movie1)));
+        assert (entitiesFromBase.contains(movieFromBase));
         assertEquals(entitiesFromBase.size(), initCount + 3);
         assert (entitiesFromBase.get(initCount + 2).getRating() > 0);
     }

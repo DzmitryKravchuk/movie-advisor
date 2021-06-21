@@ -14,4 +14,6 @@ public interface UserService {
     void delete(Integer id);
 
     void update(User entity, Integer id);
+
+    void deleteAll();
 }

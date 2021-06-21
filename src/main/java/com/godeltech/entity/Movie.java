@@ -10,6 +10,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -38,9 +40,10 @@ public final class Movie extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Country country;
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "movies", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Genre> genres = new HashSet<>();
+    @JoinTable(name = "movie_genre", joinColumns = {@JoinColumn(name = "movieId")}, inverseJoinColumns = {@JoinColumn(name = "genreId")})
+    private Set<Genre> genres= new HashSet<>();
     @Transient
     private int avgSatisfactionGrade;
     @Transient

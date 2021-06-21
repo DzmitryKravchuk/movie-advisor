@@ -128,16 +128,21 @@ public final class MovieServiceImpl implements MovieService {
     }
 
     private MovieDTO getMovieDTO(final Movie entity) {
-        List<MovieUserEvaluation> mueByMovieId = entity.getMovieEvaluations();
-        MovieDTO movieDTO = MovieDtoConverter.convertToDTO(entity);
-        mueByMovieId.sort(Comparator.comparing(MovieUserEvaluation::getUpdated).reversed());
-        List<MovieEvaluationDTO> evaluationList = mueByMovieId.stream()
+        List<MovieEvaluationDTO> evaluationList = new ArrayList<>();
+        if (!(entity.getMovieEvaluations() ==null)) {
+            List<MovieUserEvaluation> mueByMovieId = entity.getMovieEvaluations();
+            mueByMovieId.sort(Comparator.comparing(MovieUserEvaluation::getUpdated)
+                    .reversed());
+            evaluationList = getMovieEvaluationDTOs(mueByMovieId);
+        }
+        return MovieDtoConverter.convertToDTO(entity, evaluationList);
+    }
+
+    private List<MovieEvaluationDTO> getMovieEvaluationDTOs(final List<MovieUserEvaluation> mueByMovieId) {
+        return mueByMovieId.stream()
                 .map(mue -> MovieEvaluationDtoConverter
-                        .convertToDTO(mue, userService
-                                .getById(mue.getUserId()).getUserName()))
+                        .convertToDTO(mue, userService.getById(mue.getUserId()).getUserName()))
                 .collect(Collectors.toList());
-        movieDTO.getEvaluations().addAll(evaluationList);
-        return movieDTO;
     }
 
     @Override
@@ -146,7 +151,7 @@ public final class MovieServiceImpl implements MovieService {
         List<Movie> justMoviesWithCountryAndGenre = repository.getAllWithCountryAndGenre();
         List<MovieUserEvaluation> mueList = mueService.getAll();
         List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesWithCountryAndGenre, mueList);
-        return movieListWithEval.stream().map(MovieDtoConverter::convertToDTO).collect(Collectors.toList());
+        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -184,6 +189,12 @@ public final class MovieServiceImpl implements MovieService {
         } else {
             return genre.getMovies();
         }
+    }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll");
+        repository.deleteAll();
     }
 
     private Set<Movie> getMoviesWithCountryByCountryId(final Integer id) {

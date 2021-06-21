@@ -61,4 +61,10 @@ public final class UserServiceImpl implements UserService {
         }
         save(entity);
     }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll");
+        repository.deleteAll();
+    }
 }

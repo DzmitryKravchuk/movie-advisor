@@ -1,5 +1,6 @@
 package com.godeltech.utils;
 
+import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.dto.MovieEvaluationDTO;
 import com.godeltech.entity.MovieUserEvaluation;
 
@@ -16,6 +17,24 @@ public class MovieEvaluationDtoConverter {
         dto.setUserName(userName);
 
         return dto;
+    }
+
+    public static MovieUserEvaluation convertFromRequest(final EvaluationRequest evalRequest, final Integer userId) {
+        MovieUserEvaluation mue = new MovieUserEvaluation();
+        mue.setReview(evalRequest.getReview());
+        mue.setSatisfactionGrade(evalRequest.getSatisfactionGrade());
+        mue.setMovieId(evalRequest.getMovieId());
+        mue.setUserId(userId);
+        return mue;
+    }
+
+    public static EvaluationRequest convertToRequest(final MovieUserEvaluation mue, final String userName) {
+        EvaluationRequest request = new EvaluationRequest();
+        request.setReview(mue.getReview());
+        request.setSatisfactionGrade(mue.getSatisfactionGrade());
+        request.setUserName(userName);
+        request.setMovieId(mue.getMovieId());
+        return request;
     }
 
     private static String convertToSimpleDateFormat(final Date updated) {

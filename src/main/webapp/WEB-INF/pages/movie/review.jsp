@@ -8,13 +8,14 @@
 <head>
     <meta charset="utf-8">
     <title>Evaluation page</title>
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
 </head>
 <body>
 <div>
     <h2>Movie Evaluations</h2>
     <table>
         <tr>
-            <th colspan="2">${movie.title}</th>
+            <th colspan="2"><h4>${movie.title}</h4></th>
         </tr>
         <tr>
             <td>rating</td>
@@ -57,12 +58,16 @@
                                 required="true"/>
                 </div>
                 <div>
-                    <form:input type="text" class="mytext" maxlength="250" path="review" placeholder="review" required="true"/>
+                    <form:textarea type="text" class="mytext" maxlength="250" path="review" placeholder="review"
+                                required="true"/>
+                </div><br>
+                <div>
+                    <button type="submit">Evaluate</button>
                 </div>
-                <button type="submit">Evaluate</button>
             </form:form>
         </sec:authorize>
     </div>
+    <br>
     <h4>Evaluations list</h4>
     <table>
         <c:forEach items="${movie.evaluations}" var="evaluation">
@@ -71,15 +76,15 @@
                 <td>${evaluation.satisfactionGrade}</td>
             </tr>
             <tr>
-                <th>user</th>
+                <td>user</td>
                 <td>${evaluation.userName}</td>
             </tr>
             <tr>
-                <th>review</th>
+                <td>review</td>
                 <td>${evaluation.review}</td>
             </tr>
             <tr>
-                <th>date</th>
+                <td>date</td>
                 <td>${evaluation.reviewDate}</td>
             </tr>
         </c:forEach>

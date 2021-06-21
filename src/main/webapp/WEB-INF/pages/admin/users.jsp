@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>Complete users list</title>
+    <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
     <meta charset="utf-8">
 </head>
 

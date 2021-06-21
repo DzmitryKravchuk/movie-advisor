@@ -64,4 +64,10 @@ public final class CountryServiceImpl implements CountryService {
         }
         save(entity);
     }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll");
+        repository.deleteAll();
+    }
 }

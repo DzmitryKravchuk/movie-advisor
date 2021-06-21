@@ -1,27 +1,37 @@
 package com.godeltech;
 
+import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieUserEvaluation;
+import com.godeltech.entity.Role;
 import com.godeltech.entity.User;
+import com.godeltech.exception.NotUniqueLoginException;
+import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
 import com.godeltech.service.MovieUserEvaluationService;
 import com.godeltech.service.RoleService;
 import com.godeltech.service.UserService;
+import com.godeltech.utils.MovieEvaluationDtoConverter;
+
+import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.transaction.Transactional;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Transactional
 @SpringBootTest
+@RunWith(SpringRunner.class)
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class AbstractCreationTest {
     protected static final Random RANDOM = new Random();
     @Autowired
@@ -41,13 +51,39 @@ public class AbstractCreationTest {
         return RANDOM.nextInt(bound);
     }
 
+    @Before
+    public void cleanBase() {
+        mueService.deleteAll();
+        movieService.deleteAll();
+        countryService.deleteAll();
+        genreService.deleteAll();
+        userService.deleteAll();
+        roleService.deleteAll();
+    }
+
     protected User createNewUser() {
         final User entity = new User();
         entity.setUserName("User" + getRandomInt(9999));
         entity.setPassword(entity.getUserName());
-        entity.setRole(roleService.getById(1));
-        userService.save(entity);
+        try {
+            entity.setRole(roleService.getByName("ROLE_USER"));
+        } catch (ResourceNotFoundException e) {
+            entity.setRole(createUserRole());
+        }
+        try {
+            userService.save(entity);
+        } catch (NotUniqueLoginException e) {
+            entity.setUserName(entity.getUserName() + "unique");
+            userService.save(entity);
+        }
         return entity;
+    }
+
+    private Role createUserRole() {
+        Role userRole = new Role();
+        userRole.setRoleName("ROLE_USER");
+        roleService.save(userRole);
+        return userRole;
     }
 
     protected Country createNewCountry(String countryName) {
@@ -104,13 +140,14 @@ public class AbstractCreationTest {
         return entity;
     }
 
-    protected MovieUserEvaluation createNewMueWithRandomSatisfactionGrade(int movieId, int UserId) {
+    protected MovieUserEvaluation createNewMueWithRandomSatisfactionGrade(int movieId, int userId) {
         final MovieUserEvaluation entity = new MovieUserEvaluation();
         entity.setMovieId(movieId);
-        entity.setUserId(UserId);
+        entity.setUserId(userId);
         entity.setSatisfactionGrade(getRandomInt(5) + 1);
         entity.setReview("Нечего сказать, смотри оценку");
-        mueService.save(entity);
+        EvaluationRequest dto = MovieEvaluationDtoConverter.convertToRequest(entity, userService.getById(userId).getUserName());
+        mueService.save(dto);
         return entity;
     }
 
@@ -120,7 +157,8 @@ public class AbstractCreationTest {
         entity.setUserId(userId);
         entity.setSatisfactionGrade(satisfactionGrade);
         entity.setReview("Нечего сказать, смотри оценку");
-        mueService.save(entity);
+        EvaluationRequest dto = MovieEvaluationDtoConverter.convertToRequest(entity, userService.getById(userId).getUserName());
+        mueService.save(dto);
         return entity;
     }
 }

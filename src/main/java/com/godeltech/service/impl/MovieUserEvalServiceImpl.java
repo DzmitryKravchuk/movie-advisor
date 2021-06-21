@@ -1,5 +1,6 @@
 package com.godeltech.service.impl;
 
+import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
@@ -7,14 +8,15 @@ import com.godeltech.exception.UpdateNotMatchIdException;
 import com.godeltech.repository.MovieRepository;
 import com.godeltech.repository.MovieUserEvaluationRepository;
 import com.godeltech.repository.UserRepository;
+import com.godeltech.security.CustomUserDetailsService;
 import com.godeltech.service.MovieUserEvaluationService;
+import com.godeltech.utils.MovieEvaluationDtoConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -23,11 +25,13 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
     private final MovieUserEvaluationRepository repository;
     private final UserRepository userRepository;
     private final MovieRepository movieRepository;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
-    public void save(final MovieUserEvaluation entity) {
-        log.info("MovieUserEvalServiceImpl save {}", entity);
-        log.info("checkIfMovieExists {}", checkIfMovieExists(entity));
+    public void save(final EvaluationRequest entityRequest) {
+        log.info("MovieUserEvalServiceImpl save {}", entityRequest);
+        MovieUserEvaluation entity = MovieEvaluationDtoConverter
+                .convertFromRequest(entityRequest, userDetailsService.findByLogin(entityRequest.getUserName()).getId());
         if (!checkIfMovieExists(entity)) {
             throw new MovieUserEvaluationPersistenceException(" Movie with movieID: " + entity.getMovieId()
                     + " doesn't exist");
@@ -76,14 +80,22 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
     }
 
     @Override
-    public void update(final MovieUserEvaluation entity, final String id) {
+    public void deleteEvaluationsByMovieId(final Integer movieId) {
+        log.info("deleteEvaluationsByMovieId by movieId: {}", movieId);
+        repository.deleteAllByMovieId(movieId);
+    }
+
+    @Override
+    public void update(final EvaluationRequest entityRequest, final String id) {
         log.info("MovieUserEvalServiceImpl update with id: {}", id);
-        getById(id);
-        if (!entity.getId().equals(id)) {
-            throw new UpdateNotMatchIdException(" Object from request has index " + entity.getId()
-                    + " and doesnt match index from url " + id);
+        MovieUserEvaluation entity = MovieEvaluationDtoConverter
+                .convertFromRequest(entityRequest, userDetailsService.findByLogin(entityRequest.getUserName()).getId());
+        MovieUserEvaluation entityFromBase = getById(id);
+        if (!entity.getUserId().equals(entityFromBase.getUserId())
+                || !entity.getMovieId().equals(entityFromBase.getMovieId())) {
+            throw new UpdateNotMatchIdException(" Object from request doesnt match with entity from base with id ");
         }
-        save(entity);
+        save(entityRequest);
     }
 
     @Override
@@ -93,8 +105,23 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
 
     }
 
+    @Override
+    public MovieUserEvaluation getByMovieIdAndByUserId(final Integer movieId, final Integer userId) {
+        log.info("getByMovieIdAndByUserId with movieId: {}, and userId: {}", movieId, userId);
+
+        return repository.findByMovieIdAndUserId(movieId, userId).
+                orElseThrow(() -> new ResourceNotFoundException(" Object with movieId: " + movieId
+                        + " and userId: " + userId + " not found"));
+    }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll");
+        repository.deleteAll();
+    }
+
     private boolean checkIfMovieUserEvaluationExists(final MovieUserEvaluation entity) {
-        return repository.findByMovieIdAndUserId(entity.getMovieId(), entity.getUserId()) != null;
+        return repository.findByMovieIdAndUserId(entity.getMovieId(), entity.getUserId()).isPresent();
     }
 
     private boolean checkIfMovieExists(final MovieUserEvaluation entity) {

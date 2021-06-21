@@ -1,13 +1,16 @@
 package com.godeltech.utils;
 
 import com.godeltech.dto.MovieDTO;
+import com.godeltech.dto.MovieEvaluationDTO;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MovieDtoConverter {
-    public static MovieDTO convertToDTO(final Movie movie) {
+
+    public static MovieDTO convertToDTO(final Movie movie, List<MovieEvaluationDTO> evaluations) {
         MovieDTO dto = new MovieDTO();
         dto.setId(movie.getId());
         dto.setCountry(movie.getCountry().getCountryName());
@@ -18,7 +21,7 @@ public class MovieDtoConverter {
         dto.setTitle(movie.getTitle());
         dto.setDescription(movie.getDescription());
         dto.setReleaseYear(movie.getReleaseYear());
-
+        dto.setEvaluations(evaluations);
 
         return dto;
     }

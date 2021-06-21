@@ -32,4 +32,6 @@ public interface MovieService {
     List<Movie> getMoviesByCountryFullInfo(String favorite);
 
     Set<Movie> getMoviesWithGenreByGenreId(Integer genreId);
+
+    void deleteAll();
 }
