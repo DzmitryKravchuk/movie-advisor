@@ -11,6 +11,7 @@
 <body>
 <div>
     <h2>Movies list</h2>
+    <a href="${pageContext.request.contextPath}/movie/search/">Searching parameters</a>
     <table>
         <tr>
             <th>Title</th>

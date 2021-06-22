@@ -10,5 +10,5 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
     @EntityGraph(attributePaths = {"movies"})
     Optional<Genre> findOneById(Integer genreId);
 
-    Optional<Genre> findOneByGenreName(String genreName);
+    Genre findOneByGenreName(String genreName);
 }

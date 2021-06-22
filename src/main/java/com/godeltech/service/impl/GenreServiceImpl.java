@@ -46,8 +46,7 @@ public final class GenreServiceImpl implements GenreService {
     @Override
     public Genre getGenreByGenreName(final String genreName) {
         log.info(" getGenreByGenreName: {}", genreName);
-        return repository.findOneByGenreName(genreName)
-                .orElseThrow(() -> new ResourceNotFoundException(" Object with name " + genreName + " not found"));
+        return repository.findOneByGenreName(genreName);
     }
 
 

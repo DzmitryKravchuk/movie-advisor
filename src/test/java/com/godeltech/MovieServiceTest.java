@@ -93,13 +93,13 @@ public class MovieServiceTest extends AbstractCreationTest {
             createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
             createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
         }
-        List<Movie> movieListFromBase = movieService.getMoviesByGenreFullInfo(myFavorite);
+        List<MovieDTO> movieListFromBase = movieService.getMoviesByGenreFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
-        assertEquals(movieListFromBase.iterator().next().getMovieEvaluations().size(), 2);
+        assertEquals(movieListFromBase.iterator().next().getEvaluations().size(), 2);
         assertNotNull(movieListFromBase.iterator().next().getCountry());
         assert (movieListFromBase.iterator().next().getGenres().size() >= 1);
-        assert (movieListFromBase.iterator().next().getAvgSatisfactionGrade() >= 0);
-        assert (movieListFromBase.iterator().next().getAvgSatisfactionGrade() <= 5);
+        assert (movieListFromBase.iterator().next().getRating() >= 0);
+        assert (movieListFromBase.iterator().next().getRating() <= 5);
     }
 
      @Test
@@ -113,13 +113,13 @@ public class MovieServiceTest extends AbstractCreationTest {
             createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
             createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
         }
-        List<Movie> movieListFromBase = movieService.getMoviesByCountryFullInfo(myFavorite);
+        List<MovieDTO> movieListFromBase = movieService.getMoviesByCountryFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
-        assertEquals(movieListFromBase.get(0).getMovieEvaluations().size(), 2);
+        assertEquals(movieListFromBase.get(0).getEvaluations().size(), 2);
         assertNotNull(movieListFromBase.get(0).getCountry());
         assert (movieListFromBase.get(0).getGenres().size() >= 1);
-        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 0);
-        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() <= 5);
+        assert (movieListFromBase.get(0).getRating() >= 0);
+        assert (movieListFromBase.get(0).getRating() <= 5);
     }
 
     @Test

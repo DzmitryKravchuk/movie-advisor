@@ -129,7 +129,7 @@ public final class MovieServiceImpl implements MovieService {
 
     private MovieDTO getMovieDTO(final Movie entity) {
         List<MovieEvaluationDTO> evaluationList = new ArrayList<>();
-        if (!(entity.getMovieEvaluations() ==null)) {
+        if (!(entity.getMovieEvaluations() == null)) {
             List<MovieUserEvaluation> mueByMovieId = entity.getMovieEvaluations();
             mueByMovieId.sort(Comparator.comparing(MovieUserEvaluation::getUpdated)
                     .reversed());
@@ -163,20 +163,22 @@ public final class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getMoviesByGenreFullInfo(final String favorite) {
+    public List<MovieDTO> getMoviesByGenreFullInfo(final String favorite) {
         log.info(" getMoviesByGenre: {}", favorite);
         Genre foundGenre = genreService.getGenreByGenreName(favorite);
         List<Movie> justMoviesByGenre = repository
                 .getAllByGenresIn(Collections.singleton(foundGenre));
-        return fillMoviesWithEvaluations(justMoviesByGenre, mueService.getAll());
+        List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesByGenre, mueService.getAll());
+        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<Movie> getMoviesByCountryFullInfo(final String favorite) {
+    public List<MovieDTO> getMoviesByCountryFullInfo(final String favorite) {
         log.info("MovieServiceImpl getMoviesWithGenreAndCountryByCountry: {}", favorite);
         Set<Movie> movieSet = repository.getAllByCountryCountryName(favorite);
         List<Movie> justMoviesByCountry = new ArrayList<>(movieSet);
-        return fillMoviesWithEvaluations(justMoviesByCountry, mueService.getAll());
+        List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesByCountry, mueService.getAll());
+        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
     }
 
     @Override
