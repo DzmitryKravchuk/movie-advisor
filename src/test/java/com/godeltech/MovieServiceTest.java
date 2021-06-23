@@ -6,7 +6,6 @@ import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
-import com.godeltech.utils.MovieDtoConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 

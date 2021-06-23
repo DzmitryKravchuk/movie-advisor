@@ -54,13 +54,18 @@
                     <form:input type="hidden" path="userName" value="${pageContext.request.userPrincipal.name}"/>
                 </div>
                 <div>
-                    <form:input type="number" min="1" max="5" path="satisfactionGrade" placeholder="satisfactionGrade"
-                                required="true"/>
+                    <p>Please select your satisfactionGrade:</p>
+                    <form:radiobutton path="satisfactionGrade" value= "1" label ="1 sucks" required="true"/>
+                    <form:radiobutton path="satisfactionGrade" value= "2" label ="2 poor" required="true"/>
+                    <form:radiobutton path="satisfactionGrade" value= "3" label ="3 so-so" required="true"/>
+                    <form:radiobutton path="satisfactionGrade" value= "4" label ="4 above avg" required="true"/>
+                    <form:radiobutton path="satisfactionGrade" value= "5" label ="5 cool" required="true"/>
                 </div>
                 <div>
                     <form:textarea type="text" class="mytext" maxlength="250" path="review" placeholder="review"
-                                required="true"/>
-                </div><br>
+                                   required="true"/>
+                </div>
+                <br>
                 <div>
                     <button type="submit">Evaluate</button>
                 </div>
@@ -92,5 +97,6 @@
 
     <a href="${pageContext.request.contextPath}/movie/movies">Go to movies</a>
 </div>
+
 </body>
 </html>
