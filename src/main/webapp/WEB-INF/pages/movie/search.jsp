@@ -33,6 +33,14 @@
     <br><br>
     <table id="demo1"></table>
 
+    <h3>Search movie by title</h3>
+    <div>
+        <label for="title">Title input field:</label>
+        <input type="text" name="title" id="title"/>
+    </div>
+    <button type="submit" id="searchBtn">Search</button>
+    <br><br>
+    <table id="demo2"></table>
 
     <br><br>
     <a href="${pageContext.request.contextPath}/">Go home</a>
@@ -71,8 +79,24 @@
             });
         });
 
+        $(function () {
+            $('#searchBtn').click(function () {
+                $.ajax({
+                    url: "/movie/titleSearch",
+                    type: "POST",
+                    dataType: "json",
+                    data: {title: $('#title').val()},
+                })
+                    .done(function (data) {
+                        setMovies(data, "demo2")
+                    })
+                    .fail(function (xhr, status, error) {
+                        alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                    });
+            });
+        });
 
-        var setMovies = function (data,elementName) {
+        var setMovies = function (data, elementName) {
             let table = "<tr><th>Title</th><th>Year</th><th>Director</th><th>Country</th><th>Genres</th><th>Rating</th></tr>";
             var len = data.length;
             for (var i = 0; i < len; i++) {

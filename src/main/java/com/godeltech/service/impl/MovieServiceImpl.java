@@ -155,11 +155,12 @@ public final class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getMoviesByTitleFullInfo(final String favorite) {
+    public List<MovieDTO> getMoviesByTitleFullInfo(final String favorite) {
         log.info("MovieServiceImpl getAllMoviesByTitle: {}", favorite);
         List<Movie> justMoviesByTitle = repository
                 .findAllByTitleContainingIgnoreCase(favorite);
-        return fillMoviesWithEvaluations(justMoviesByTitle, mueService.getAll());
+        List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesByTitle, mueService.getAll());
+        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
     }
 
     @Override

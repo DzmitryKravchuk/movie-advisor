@@ -41,7 +41,6 @@ public final class MovieController {
     public String movieSearch(final Model model) {
         model.addAttribute("allGenres", genreService.getAll());
         model.addAttribute("allCountries", countryService.getAll());
-        model.addAttribute("allMovies", movieService.getAll());
         return "/movie/search";
     }
 
@@ -55,5 +54,11 @@ public final class MovieController {
     @ResponseBody
     public List<MovieDTO> searchMovieByCountry(@RequestParam(value = "country", required = false) final String country, final Model model) {
         return movieService.getMoviesByCountryFullInfo(country);
+    }
+
+    @PostMapping("movie/titleSearch")
+    @ResponseBody
+    public List<MovieDTO> searchMovieByTitle(@RequestParam(value = "title") final String title, final Model model) {
+        return movieService.getMoviesByTitleFullInfo(title);
     }
 }

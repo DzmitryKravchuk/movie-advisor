@@ -54,13 +54,13 @@ public class MovieServiceTest extends AbstractCreationTest {
             createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
             createNewMueWithRandomSatisfactionGrade(movie.getId(), createNewUser().getId());
         }
-        List<Movie> movieListFromBase = movieService.getMoviesByTitleFullInfo("favorite");
+        List<MovieDTO> movieListFromBase = movieService.getMoviesByTitleFullInfo("favorite");
         assertEquals(movieListFromBase.size(), 10);
-        assertEquals(movieListFromBase.get(0).getMovieEvaluations().size(), 2);
+        assertEquals(movieListFromBase.get(0).getEvaluations().size(), 2);
         assertNotNull(movieListFromBase.get(0).getCountry());
         assert (movieListFromBase.get(0).getGenres().size() >= 1);
-        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 0);
-        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() <= 5);
+        assert (movieListFromBase.get(0).getRating() >= 0);
+        assert (movieListFromBase.get(0).getRating() <= 5);
     }
 
     @Test

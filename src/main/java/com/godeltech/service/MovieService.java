@@ -25,7 +25,7 @@ public interface MovieService {
 
     List<MovieDTO> getAllFullInfo();
 
-    List<Movie> getMoviesByTitleFullInfo(String favorite);
+    List<MovieDTO> getMoviesByTitleFullInfo(String favorite);
 
     List<MovieDTO> getMoviesByGenreFullInfo(String favorite);
 
