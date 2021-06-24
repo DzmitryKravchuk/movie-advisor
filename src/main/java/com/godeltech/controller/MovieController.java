@@ -6,7 +6,10 @@ import com.godeltech.dto.MovieDTO;
 import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
+import com.godeltech.service.MovieUserEvaluationService;
+import com.godeltech.service.PageableMovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,18 +24,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public final class MovieController {
     private final MovieService movieService;
+    private final PageableMovieService pageableMovieService;
     private final GenreService genreService;
     private final CountryService countryService;
+    private final MovieUserEvaluationService mueService;
 
-    @GetMapping("/movie/movies")
-    public String movieList(final Model model) {
-        model.addAttribute("allMovies", movieService.getAllFullInfo());
+    @GetMapping("/movie/movies/page/{pageNum}")
+    public String movieList(final Model model, @PathVariable(name = "pageNum") final int pageNum) {
+        Page<MovieDTO> page = pageableMovieService.listAll(pageNum);
+
+        List<MovieDTO> listMovies = page.getContent();
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("allMovies", listMovies);
         return "/movie/movies";
     }
 
     @GetMapping("/movie/review{id}")
     public String movieEvaluation(final Model model, @PathVariable final int id) {
         model.addAttribute("movie", movieService.getByIdFullInfo(id));
+        model.addAttribute("evaluations", mueService.getMovieEvaluationDTOs(id));
         model.addAttribute("evalRequest", new EvaluationRequest());
         return "/movie/review";
     }

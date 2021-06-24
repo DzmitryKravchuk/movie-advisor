@@ -38,8 +38,11 @@
             </tr>
         </c:forEach>
     </table>
-
-
+    <div>&nbsp;</div>
+    <c:forEach var="i" begin="1" end="${totalPages}">
+        <a href="/movie/movies/page/${i}">${i}&nbsp</a>
+    </c:forEach>
+    <br><br>
     <a href="${pageContext.request.contextPath}/">Go home</a>
 </div>
 </body>

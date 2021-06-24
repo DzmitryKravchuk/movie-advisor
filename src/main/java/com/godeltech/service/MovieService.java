@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface MovieService {
+
     void save(Movie entity);
 
     Movie getById(Integer id);

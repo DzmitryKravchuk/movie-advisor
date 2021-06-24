@@ -55,7 +55,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         }
         List<MovieDTO> movieListFromBase = movieService.getMoviesByTitleFullInfo("favorite");
         assertEquals(movieListFromBase.size(), 10);
-        assertEquals(movieListFromBase.get(0).getEvaluations().size(), 2);
+        assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
         assertNotNull(movieListFromBase.get(0).getCountry());
         assert (movieListFromBase.get(0).getGenres().size() >= 1);
         assert (movieListFromBase.get(0).getRating() >= 0);
@@ -94,7 +94,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         }
         List<MovieDTO> movieListFromBase = movieService.getMoviesByGenreFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
-        assertEquals(movieListFromBase.iterator().next().getEvaluations().size(), 2);
+        assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
         assertNotNull(movieListFromBase.iterator().next().getCountry());
         assert (movieListFromBase.iterator().next().getGenres().size() >= 1);
         assert (movieListFromBase.iterator().next().getRating() >= 0);
@@ -114,7 +114,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         }
         List<MovieDTO> movieListFromBase = movieService.getMoviesByCountryFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
-        assertEquals(movieListFromBase.get(0).getEvaluations().size(), 2);
+         assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
         assertNotNull(movieListFromBase.get(0).getCountry());
         assert (movieListFromBase.get(0).getGenres().size() >= 1);
         assert (movieListFromBase.get(0).getRating() >= 0);
@@ -132,7 +132,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         MovieDTO entityFromBase = movieService.getByIdFullInfo(movie.getId());
 
         assertNotNull(entityFromBase.getId());
-        assertEquals(mueService.getAllByMovieId(movie.getId()).size(), entityFromBase.getEvaluations().size());
+        assertEquals(mueService.getAllByMovieId(movie.getId()).size(), mueService.getMovieEvaluationDTOs(entityFromBase.getId()).size());
         assertEquals(entityFromBase.getRating(), 3);
     }
 

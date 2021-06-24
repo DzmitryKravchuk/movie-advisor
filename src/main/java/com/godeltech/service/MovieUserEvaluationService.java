@@ -1,6 +1,7 @@
 package com.godeltech.service;
 
 import com.godeltech.dto.EvaluationRequest;
+import com.godeltech.dto.MovieEvaluationDTO;
 import com.godeltech.entity.MovieUserEvaluation;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public interface MovieUserEvaluationService {
     List<MovieUserEvaluation> getAllByMovieId(Integer movieId);
 
     MovieUserEvaluation getByMovieIdAndByUserId(Integer id, Integer id1);
+
+    List<MovieEvaluationDTO> getMovieEvaluationDTOs(Integer movieId);
 
     void deleteAll();
 }

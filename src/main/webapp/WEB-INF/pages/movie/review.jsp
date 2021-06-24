@@ -75,7 +75,7 @@
     <br>
     <h4>Evaluations list</h4>
     <table>
-        <c:forEach items="${movie.evaluations}" var="evaluation">
+        <c:forEach items="${evaluations}" var="evaluation">
             <tr>
                 <th>rating</th>
                 <td>${evaluation.satisfactionGrade}</td>

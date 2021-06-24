@@ -1,7 +1,9 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.dto.EvaluationRequest;
+import com.godeltech.dto.MovieEvaluationDTO;
 import com.godeltech.entity.MovieUserEvaluation;
+import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.UpdateNotMatchIdException;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -112,6 +115,15 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
         return repository.findByMovieIdAndUserId(movieId, userId).
                 orElseThrow(() -> new ResourceNotFoundException(" Object with movieId: " + movieId
                         + " and userId: " + userId + " not found"));
+    }
+
+    @Override
+    public List<MovieEvaluationDTO> getMovieEvaluationDTOs(final Integer movieId) {
+        log.info("getMovieEvaluationDTOs by movieId: {}", movieId);
+        return getAllByMovieId(movieId).stream()
+                .map(mue -> MovieEvaluationDtoConverter.convertToDTO(mue,
+                        userRepository.findById(mue.getUserId()).orElse(new User()).getUserName()))
+                        .collect(Collectors.toList());
     }
 
     @Override

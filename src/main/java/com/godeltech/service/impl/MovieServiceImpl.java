@@ -1,7 +1,6 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.dto.MovieDTO;
-import com.godeltech.dto.MovieEvaluationDTO;
 import com.godeltech.entity.Country;
 import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
@@ -13,17 +12,14 @@ import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
 import com.godeltech.service.MovieService;
 import com.godeltech.service.MovieUserEvaluationService;
-import com.godeltech.service.UserService;
 import com.godeltech.utils.AvgSatisfactionGradeCalc;
 import com.godeltech.utils.MovieDtoConverter;
-import com.godeltech.utils.MovieEvaluationDtoConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +35,6 @@ public final class MovieServiceImpl implements MovieService {
     private final MovieUserEvaluationService mueService;
     private final GenreService genreService;
     private final CountryService countryService;
-    private final UserService userService;
 
     @Override
     public void save(final Movie entity) {
@@ -124,25 +119,7 @@ public final class MovieServiceImpl implements MovieService {
         entity.setMovieEvaluations(mueByMovieId);
         entity.setAvgSatisfactionGrade(AvgSatisfactionGradeCalc.calculate(mueByMovieId));
 
-        return getMovieDTO(entity);
-    }
-
-    private MovieDTO getMovieDTO(final Movie entity) {
-        List<MovieEvaluationDTO> evaluationList = new ArrayList<>();
-        if (!(entity.getMovieEvaluations() == null)) {
-            List<MovieUserEvaluation> mueByMovieId = entity.getMovieEvaluations();
-            mueByMovieId.sort(Comparator.comparing(MovieUserEvaluation::getUpdated)
-                    .reversed());
-            evaluationList = getMovieEvaluationDTOs(mueByMovieId);
-        }
-        return MovieDtoConverter.convertToDTO(entity, evaluationList);
-    }
-
-    private List<MovieEvaluationDTO> getMovieEvaluationDTOs(final List<MovieUserEvaluation> mueByMovieId) {
-        return mueByMovieId.stream()
-                .map(mue -> MovieEvaluationDtoConverter
-                        .convertToDTO(mue, userService.getById(mue.getUserId()).getUserName()))
-                .collect(Collectors.toList());
+        return MovieDtoConverter.convertToDTO(entity);
     }
 
     @Override
@@ -151,7 +128,7 @@ public final class MovieServiceImpl implements MovieService {
         List<Movie> justMoviesWithCountryAndGenre = repository.getAllWithCountryAndGenre();
         List<MovieUserEvaluation> mueList = mueService.getAll();
         List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesWithCountryAndGenre, mueList);
-        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
+        return movieListWithEval.stream().map(MovieDtoConverter::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -160,7 +137,7 @@ public final class MovieServiceImpl implements MovieService {
         List<Movie> justMoviesByTitle = repository
                 .findAllByTitleContainingIgnoreCase(favorite);
         List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesByTitle, mueService.getAll());
-        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
+        return movieListWithEval.stream().map(MovieDtoConverter::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -170,7 +147,7 @@ public final class MovieServiceImpl implements MovieService {
         List<Movie> justMoviesByGenre = repository
                 .getAllByGenresIn(Collections.singleton(foundGenre));
         List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesByGenre, mueService.getAll());
-        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
+        return movieListWithEval.stream().map(MovieDtoConverter::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -179,7 +156,7 @@ public final class MovieServiceImpl implements MovieService {
         Set<Movie> movieSet = repository.getAllByCountryCountryName(favorite);
         List<Movie> justMoviesByCountry = new ArrayList<>(movieSet);
         List<Movie> movieListWithEval = fillMoviesWithEvaluations(justMoviesByCountry, mueService.getAll());
-        return movieListWithEval.stream().map(this::getMovieDTO).collect(Collectors.toList());
+        return movieListWithEval.stream().map(MovieDtoConverter::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
