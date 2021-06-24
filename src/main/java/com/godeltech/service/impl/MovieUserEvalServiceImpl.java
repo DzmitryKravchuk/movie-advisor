@@ -3,7 +3,6 @@ package com.godeltech.service.impl;
 import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.dto.MovieEvaluationDTO;
 import com.godeltech.entity.MovieUserEvaluation;
-import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.UpdateNotMatchIdException;
@@ -11,7 +10,9 @@ import com.godeltech.repository.MovieRepository;
 import com.godeltech.repository.MovieUserEvaluationRepository;
 import com.godeltech.repository.UserRepository;
 import com.godeltech.security.CustomUserDetailsService;
+import com.godeltech.service.MovieService;
 import com.godeltech.service.MovieUserEvaluationService;
+import com.godeltech.service.UserService;
 import com.godeltech.utils.MovieEvaluationDtoConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,9 @@ import java.util.stream.Collectors;
 public final class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
     private final MovieUserEvaluationRepository repository;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final MovieRepository movieRepository;
+    private final MovieService movieService;
     private final CustomUserDetailsService userDetailsService;
 
     @Override
@@ -122,8 +125,8 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
         log.info("getMovieEvaluationDTOs by movieId: {}", movieId);
         return getAllByMovieId(movieId).stream()
                 .map(mue -> MovieEvaluationDtoConverter.convertToDTO(mue,
-                        userRepository.findById(mue.getUserId()).orElse(new User()).getUserName()))
-                        .collect(Collectors.toList());
+                        userService.getById(mue.getUserId()).getUserName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -136,10 +139,12 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
         return repository.findByMovieIdAndUserId(entity.getMovieId(), entity.getUserId()).isPresent();
     }
 
+    //TODO move to movie service
     private boolean checkIfMovieExists(final MovieUserEvaluation entity) {
         return movieRepository.findById(entity.getMovieId()).isPresent();
     }
 
+    //TODO move to user service
     private boolean checkIfUserExists(final MovieUserEvaluation entity) {
         return userRepository.findById(entity.getUserId()).isPresent();
     }

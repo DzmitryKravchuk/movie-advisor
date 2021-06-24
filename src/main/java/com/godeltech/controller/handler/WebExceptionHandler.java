@@ -1,4 +1,4 @@
-package com.godeltech.controller;
+package com.godeltech.controller.handler;
 
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.NotUniqueLoginException;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
-public final class CustomControllerAdvice {
+public final class WebExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

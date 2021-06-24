@@ -22,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public final class MovieController {
+public class MovieController {
     private final MovieService movieService;
     private final PageableMovieService pageableMovieService;
     private final GenreService genreService;
@@ -30,7 +30,7 @@ public final class MovieController {
     private final MovieUserEvaluationService mueService;
 
     @GetMapping("/movie/movies/page/{pageNum}")
-    public String movieList(final Model model, @PathVariable(name = "pageNum") final int pageNum) {
+    public String movieList(final Model model, @PathVariable(name = "pageNum") int pageNum) {
         Page<MovieDTO> page = pageableMovieService.listAll(pageNum);
 
         List<MovieDTO> listMovies = page.getContent();

@@ -1,11 +1,10 @@
-package com.godeltech;
+package com.godeltech.service;
 
 import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.ResourceNotFoundException;
-import com.godeltech.service.MovieUserEvaluationService;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,9 +15,9 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
 
     @Test
     public void createMovieUserEvaluationTest() {
-        final User user = createNewUser();
+        final User user = createNewUser("User1");
         final Movie movie = createNewMovie();
-        final MovieUserEvaluation entity = createNewMueWithRandomSatisfactionGrade(movie.getId(), user.getId());
+        final MovieUserEvaluation entity = createNewMue(movie.getId(), user.getId(),1);
         MovieUserEvaluation entityFromBase = mueService.getByMovieIdAndByUserId(movie.getId(), user.getId());
         assertNotNull(entityFromBase.getId());
         assertEquals(entity.getReview(), entityFromBase.getReview());
@@ -29,7 +28,7 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
     public void selectAllByMovieIdTest() {
         final Movie movie = createNewMovie();
         for (int i = 0; i < 5; i++) {
-            User user = createNewUser();
+            User user = createNewUser("User"+i);
             createNewMue(movie.getId(), user.getId(),i+1);
         }
         assertEquals(mueService.getAllByMovieId(movie.getId()).size(), 5);
@@ -38,20 +37,20 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
 
     @Test
     public void throwExceptionTest() {
-        assertThrows(ResourceNotFoundException.class, () -> createNewMueWithRandomSatisfactionGrade(-1, 1));
+        assertThrows(ResourceNotFoundException.class, () -> createNewMue(-1, 1,1));
     }
 
     @Test
     public void throwExceptionTest1() {
-        final User user = createNewUser();
+        final User user = createNewUser("User1");
         final Movie movie = createNewMovie();
-        createNewMueWithRandomSatisfactionGrade(movie.getId(), user.getId());
-        assertThrows(MovieUserEvaluationPersistenceException.class, () -> createNewMueWithRandomSatisfactionGrade(movie.getId(), user.getId()));
+        createNewMue(movie.getId(), user.getId(),1);
+        assertThrows(MovieUserEvaluationPersistenceException.class, () -> createNewMue(movie.getId(), user.getId(),1));
     }
 
     @Test
     public void throwExceptionTest2() {
-        final User user = createNewUser();
+        final User user = createNewUser("User1");
         final Movie movie = createNewMovie();
         assertThrows(MovieUserEvaluationPersistenceException.class, ()
                 -> createNewMue(movie.getId(), user.getId(), MovieUserEvaluationService.MAX_GRADE + 1));

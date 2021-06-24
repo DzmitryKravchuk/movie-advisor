@@ -1,4 +1,4 @@
-package com.godeltech;
+package com.godeltech.service;
 
 import com.godeltech.entity.Country;
 import org.junit.Test;
@@ -6,10 +6,10 @@ import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CountryServiceTest extends AbstractCreationTest{
+public class CountryServiceTest extends AbstractCreationTest {
     @Test
     public void crudTest() {
-        final Country entity = createNewCountry("New Country"+ getRandomInt(9999));
+        final Country entity = createNewCountry("New Country");
         Country entityFromBase = countryService.getById(entity.getId());
         assertNotNull(entityFromBase.getId());
         assertEquals(entity.getCountryName(), entityFromBase.getCountryName());

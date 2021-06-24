@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-public final class AdminController {
+public class AdminController {
     private final UserService userService;
 
     @GetMapping("/admin/users")
