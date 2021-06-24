@@ -24,7 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,6 +38,8 @@ public class AbstractCreationTest {
     protected UserService userService;
     @Autowired
     protected MovieService movieService;
+    @Autowired
+    protected MovieDtoService movieDtoService;
     @Autowired
     protected CountryService countryService;
     @Autowired
@@ -141,8 +142,17 @@ public class AbstractCreationTest {
         entity.setUserId(userId);
         entity.setSatisfactionGrade(satisfactionGrade);
         entity.setReview("Нечего сказать, смотри оценку");
-        EvaluationRequest dto = MovieEvaluationDtoConverter.convertToRequest(entity, userService.getById(userId).getUserName());
+        EvaluationRequest dto = convertToRequest(entity, userService.getById(userId).getUserName());
         mueService.save(dto);
         return entity;
+    }
+
+    private static EvaluationRequest convertToRequest(final MovieUserEvaluation mue, final String userName) {
+        EvaluationRequest request = new EvaluationRequest();
+        request.setReview(mue.getReview());
+        request.setSatisfactionGrade(mue.getSatisfactionGrade());
+        request.setUserName(userName);
+        request.setMovieId(mue.getMovieId());
+        return request;
     }
 }

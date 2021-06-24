@@ -15,11 +15,11 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public final class CountryServiceImpl implements CountryService {
+public class CountryServiceImpl implements CountryService {
     private final CountryRepository repository;
 
     @Override
-    public void save(final Country entity) {
+    public void save(Country entity) {
         log.info("CountryServiceImpl save {}", entity);
         Date currentDate = new Date();
         entity.setUpdated(currentDate);
@@ -30,14 +30,14 @@ public final class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Country getById(final Integer id) {
+    public Country getById(Integer id) {
         log.info("CountryServiceImpl getById: {}", id);
         return repository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override
-    public Country getCountryWithMoviesByCountryId(final Integer id) {
+    public Country getCountryWithMoviesByCountryId(Integer id) {
         log.info("CountryServiceImpl getCountryWithMoviesByCountryId: {}", id);
         return repository.findOneById(id);
     }
@@ -49,13 +49,13 @@ public final class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public void delete(final Integer id) {
+    public void delete(Integer id) {
         log.info("CountryServiceImpl delete by id: {}", id);
         repository.deleteById(id);
     }
 
     @Override
-    public void update(final Country entity, final Integer id) {
+    public void update(Country entity, Integer id) {
         log.info("CountryServiceImpl update with id: {}", id);
         getById(id);
         if (!entity.getId().equals(id)) {

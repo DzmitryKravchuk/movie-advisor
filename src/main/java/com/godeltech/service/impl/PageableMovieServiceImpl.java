@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public final class PageableMovieServiceImpl implements PageableMovieService {
+public class PageableMovieServiceImpl implements PageableMovieService {
     private final PageableMovieRepository repository;
     private final MovieUserEvaluationService mueService;
 
     @Override
-    public Page<MovieDTO> listAll(final int pageNum) {
+    public Page<MovieDTO> listAll(int pageNum) {
         Page<Movie> movies = findAll(pageNum);
         movies.forEach(m -> m.setAvgSatisfactionGrade(
                 AvgSatisfactionGradeCalc.calculate(
@@ -30,7 +30,7 @@ public final class PageableMovieServiceImpl implements PageableMovieService {
         return movies.map(MovieDtoConverter::convertToDTO);
     }
 
-    private Page<Movie> findAll(final int pageNum) {
+    private Page<Movie> findAll(int pageNum) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         return repository.findAll(pageable);
     }

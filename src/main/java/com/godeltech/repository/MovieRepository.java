@@ -11,9 +11,6 @@ import java.util.Set;
 
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @EntityGraph(attributePaths = {"country", "genres"})
-    List<Movie> findAllByDirectorContainingIgnoreCase(String director);
-
-    @EntityGraph(attributePaths = {"country", "genres"})
     List<Movie> findAllByTitleContainingIgnoreCase(String title);
 
     @EntityGraph(attributePaths = {"country", "genres"})

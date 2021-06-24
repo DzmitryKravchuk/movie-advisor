@@ -6,9 +6,7 @@ import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.UpdateNotMatchIdException;
-import com.godeltech.repository.MovieRepository;
 import com.godeltech.repository.MovieUserEvaluationRepository;
-import com.godeltech.repository.UserRepository;
 import com.godeltech.security.CustomUserDetailsService;
 import com.godeltech.service.MovieService;
 import com.godeltech.service.MovieUserEvaluationService;
@@ -25,16 +23,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public final class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
+public class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
     private final MovieUserEvaluationRepository repository;
-    private final UserRepository userRepository;
     private final UserService userService;
-    private final MovieRepository movieRepository;
     private final MovieService movieService;
     private final CustomUserDetailsService userDetailsService;
 
     @Override
-    public void save(final EvaluationRequest entityRequest) {
+    public void save(EvaluationRequest entityRequest) {
         log.info("MovieUserEvalServiceImpl save {}", entityRequest);
         MovieUserEvaluation entity = MovieEvaluationDtoConverter
                 .convertFromRequest(entityRequest, userDetailsService.findByLogin(entityRequest.getUserName()).getId());
@@ -67,7 +63,7 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
     }
 
     @Override
-    public MovieUserEvaluation getById(final String id) {
+    public MovieUserEvaluation getById(String id) {
         log.info("MovieUserEvalServiceImpl get by id: {}", id);
         return repository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
@@ -80,19 +76,19 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
     }
 
     @Override
-    public void delete(final String id) {
+    public void delete(String id) {
         log.info("MovieUserEvalServiceImpl delete by id: {}", id);
         repository.deleteById(id);
     }
 
     @Override
-    public void deleteEvaluationsByMovieId(final Integer movieId) {
+    public void deleteEvaluationsByMovieId(Integer movieId) {
         log.info("deleteEvaluationsByMovieId by movieId: {}", movieId);
         repository.deleteAllByMovieId(movieId);
     }
 
     @Override
-    public void update(final EvaluationRequest entityRequest, final String id) {
+    public void update(EvaluationRequest entityRequest, String id) {
         log.info("MovieUserEvalServiceImpl update with id: {}", id);
         MovieUserEvaluation entity = MovieEvaluationDtoConverter
                 .convertFromRequest(entityRequest, userDetailsService.findByLogin(entityRequest.getUserName()).getId());
@@ -105,14 +101,14 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
     }
 
     @Override
-    public List<MovieUserEvaluation> getAllByMovieId(final Integer movieId) {
+    public List<MovieUserEvaluation> getAllByMovieId(Integer movieId) {
         log.info("MovieUserEvalServiceImpl getByMovieId with id: {}", movieId);
         return repository.getAllByMovieId(movieId);
 
     }
 
     @Override
-    public MovieUserEvaluation getByMovieIdAndByUserId(final Integer movieId, final Integer userId) {
+    public MovieUserEvaluation getByMovieIdAndByUserId(Integer movieId, Integer userId) {
         log.info("getByMovieIdAndByUserId with movieId: {}, and userId: {}", movieId, userId);
 
         return repository.findByMovieIdAndUserId(movieId, userId).
@@ -121,7 +117,7 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
     }
 
     @Override
-    public List<MovieEvaluationDTO> getMovieEvaluationDTOs(final Integer movieId) {
+    public List<MovieEvaluationDTO> getMovieEvaluationDTOs(Integer movieId) {
         log.info("getMovieEvaluationDTOs by movieId: {}", movieId);
         return getAllByMovieId(movieId).stream()
                 .map(mue -> MovieEvaluationDtoConverter.convertToDTO(mue,
@@ -135,21 +131,29 @@ public final class MovieUserEvalServiceImpl implements MovieUserEvaluationServic
         repository.deleteAll();
     }
 
-    private boolean checkIfMovieUserEvaluationExists(final MovieUserEvaluation entity) {
+    private boolean checkIfMovieUserEvaluationExists(MovieUserEvaluation entity) {
         return repository.findByMovieIdAndUserId(entity.getMovieId(), entity.getUserId()).isPresent();
     }
 
-    //TODO move to movie service
-    private boolean checkIfMovieExists(final MovieUserEvaluation entity) {
-        return movieRepository.findById(entity.getMovieId()).isPresent();
+    private boolean checkIfMovieExists(MovieUserEvaluation entity) {
+        try {
+            movieService.getById(entity.getMovieId());
+        } catch (ResourceNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
-    //TODO move to user service
-    private boolean checkIfUserExists(final MovieUserEvaluation entity) {
-        return userRepository.findById(entity.getUserId()).isPresent();
+    private boolean checkIfUserExists(MovieUserEvaluation entity) {
+        try {
+            userService.getById(entity.getUserId());
+        } catch (ResourceNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
-    private boolean checkIfSatisfactionGradeIsValid(final MovieUserEvaluation entity) {
+    private boolean checkIfSatisfactionGradeIsValid(MovieUserEvaluation entity) {
         return entity.getSatisfactionGrade() > 0 && entity.getSatisfactionGrade() <= MAX_GRADE;
     }
 }

@@ -6,7 +6,6 @@ import com.godeltech.entity.Genre;
 import com.godeltech.entity.Movie;
 import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
-import com.godeltech.service.AbstractCreationTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -29,24 +28,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         movieService.delete(entity.getId());
     }
 
-    @Test
-    public void findAllMoviesByDirectorTest() {
-        final String myFavoriteDirector = "myFavoriteDirector";
-        for (int i = 0; i < 3; i++) {
-            Movie movie = createNewMovieWithDirector(myFavoriteDirector);
-            createNewMue(movie.getId(), createNewUser("FirstUser"+i).getId(),1);
-            createNewMue(movie.getId(), createNewUser("SecondUser"+i).getId(),2);
-        }
-        List<Movie> movieListFromBase = movieService.getMoviesByDirectorFullInfo("favorite");
-        assertEquals(movieListFromBase.size(), 3);
-        assertEquals(movieListFromBase.get(0).getMovieEvaluations().size(), 2);
-        assertNotNull(movieListFromBase.get(0).getCountry());
-        assert (movieListFromBase.get(0).getGenres().size() >= 1);
-        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() >= 0);
-        assert (movieListFromBase.get(0).getAvgSatisfactionGrade() <= 5);
-    }
-
-    @Test
+     @Test
     public void findMoviesByTitleTest() {
         final String myFavoriteTitle = "myFavoriteTitle";
         for (int i = 0; i < 10; i++) {
@@ -54,7 +36,7 @@ public class MovieServiceTest extends AbstractCreationTest {
             createNewMue(movie.getId(), createNewUser("FirstUser"+i).getId(),1);
             createNewMue(movie.getId(), createNewUser("SecondUser"+i).getId(),2);
         }
-        List<MovieDTO> movieListFromBase = movieService.getMoviesByTitleFullInfo("favorite");
+        List<MovieDTO> movieListFromBase = movieDtoService.getMoviesByTitleFullInfo("favorite");
         assertEquals(movieListFromBase.size(), 10);
         assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
         assertNotNull(movieListFromBase.get(0).getCountry());
@@ -93,7 +75,7 @@ public class MovieServiceTest extends AbstractCreationTest {
             createNewMue(movie.getId(), createNewUser("FirstUser"+i).getId(),1);
             createNewMue(movie.getId(), createNewUser("SecondUser"+i).getId(),2);
         }
-        List<MovieDTO> movieListFromBase = movieService.getMoviesByGenreFullInfo(myFavorite);
+        List<MovieDTO> movieListFromBase = movieDtoService.getMoviesByGenreFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
         assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
         assertNotNull(movieListFromBase.iterator().next().getCountry());
@@ -113,7 +95,7 @@ public class MovieServiceTest extends AbstractCreationTest {
             createNewMue(movie.getId(), createNewUser("FirstUser"+i).getId(),1);
             createNewMue(movie.getId(), createNewUser("SecondUser"+i).getId(),2);
         }
-        List<MovieDTO> movieListFromBase = movieService.getMoviesByCountryFullInfo(myFavorite);
+        List<MovieDTO> movieListFromBase = movieDtoService.getMoviesByCountryFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
          assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
         assertNotNull(movieListFromBase.get(0).getCountry());
@@ -130,7 +112,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         createNewMue(movie.getId(), user1.getId(), 5);
         createNewMue(movie.getId(), user2.getId(), 2);
 
-        MovieDTO entityFromBase = movieService.getByIdFullInfo(movie.getId());
+        MovieDTO entityFromBase = movieDtoService.getByIdFullInfo(movie.getId());
 
         assertNotNull(entityFromBase.getId());
         assertEquals(mueService.getAllByMovieId(movie.getId()).size(), mueService.getMovieEvaluationDTOs(entityFromBase.getId()).size());
@@ -154,9 +136,9 @@ public class MovieServiceTest extends AbstractCreationTest {
         createNewMue(movie3.getId(), user1.getId(),1);
         createNewMue(movie3.getId(), user2.getId(),2);
 
-        MovieDTO movieFromBase = movieService.getByIdFullInfo(movie1.getId());
+        MovieDTO movieFromBase = movieDtoService.getByIdFullInfo(movie1.getId());
 
-        List<MovieDTO> entitiesFromBase = movieService.getAllFullInfo();
+        List<MovieDTO> entitiesFromBase = movieDtoService.getAllFullInfo();
 
         assert (entitiesFromBase.contains(movieFromBase));
         assertEquals(entitiesFromBase.size(), initCount + 3);

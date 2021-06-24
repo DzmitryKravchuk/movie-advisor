@@ -28,15 +28,6 @@ public class MovieEvaluationDtoConverter {
         return mue;
     }
 
-    public static EvaluationRequest convertToRequest(final MovieUserEvaluation mue, final String userName) {
-        EvaluationRequest request = new EvaluationRequest();
-        request.setReview(mue.getReview());
-        request.setSatisfactionGrade(mue.getSatisfactionGrade());
-        request.setUserName(userName);
-        request.setMovieId(mue.getMovieId());
-        return request;
-    }
-
     private static String convertToSimpleDateFormat(final Date updated) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(updated);

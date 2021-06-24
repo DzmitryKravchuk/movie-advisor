@@ -32,7 +32,7 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
             createNewMue(movie.getId(), user.getId(),i+1);
         }
         assertEquals(mueService.getAllByMovieId(movie.getId()).size(), 5);
-        assertEquals(movieService.getByIdFullInfo(movie.getId()).getRating(),3);
+        assertEquals(movieDtoService.getByIdFullInfo(movie.getId()).getRating(),3);
     }
 
     @Test

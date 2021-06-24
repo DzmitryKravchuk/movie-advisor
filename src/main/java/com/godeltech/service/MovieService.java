@@ -1,6 +1,5 @@
 package com.godeltech.service;
 
-import com.godeltech.dto.MovieDTO;
 import com.godeltech.entity.Movie;
 
 import java.util.List;
@@ -18,19 +17,15 @@ public interface MovieService {
 
     void update(Movie entity, Integer id);
 
-    List<Movie> getMoviesByDirectorFullInfo(String favorite);
-
     Movie getByIdContainsGenreCountry(Integer id);
 
-    MovieDTO getByIdFullInfo(Integer id);
+    List<Movie> getAllWithCountryAndGenre();
 
-    List<MovieDTO> getAllFullInfo();
+    List<Movie> getAllByTitleFullInfo(String favorite);
 
-    List<MovieDTO> getMoviesByTitleFullInfo(String favorite);
+    List<Movie> getAllByGenreFullInfo(String favorite);
 
-    List<MovieDTO> getMoviesByGenreFullInfo(String favorite);
-
-    List<MovieDTO> getMoviesByCountryFullInfo(String favorite);
+    Set<Movie> getAllByCountryFullInfo(String favorite);
 
     Set<Movie> getMoviesWithGenreByGenreId(Integer genreId);
 

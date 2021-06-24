@@ -13,18 +13,18 @@ import java.util.Date;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public final class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository repository;
 
     @Override
-    public Role getById(final Integer id) {
+    public Role getById(Integer id) {
         log.info("RoleServiceImpl get by id: {}", id);
         return repository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override
-    public Role getByName(final String name) {
+    public Role getByName(String name) {
         log.info("getByName: {}", name);
         return repository.findByRoleName(name).
                 orElseThrow(() -> new ResourceNotFoundException(" Object with name " + name + " not found"));

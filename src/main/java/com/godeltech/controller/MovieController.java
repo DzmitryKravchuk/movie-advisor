@@ -5,7 +5,7 @@ import com.godeltech.dto.MovieDTO;
 
 import com.godeltech.service.CountryService;
 import com.godeltech.service.GenreService;
-import com.godeltech.service.MovieService;
+import com.godeltech.service.MovieDtoService;
 import com.godeltech.service.MovieUserEvaluationService;
 import com.godeltech.service.PageableMovieService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class MovieController {
-    private final MovieService movieService;
+    private final MovieDtoService movieService;
     private final PageableMovieService pageableMovieService;
     private final GenreService genreService;
     private final CountryService countryService;
@@ -43,7 +43,7 @@ public class MovieController {
     }
 
     @GetMapping("/movie/review{id}")
-    public String movieEvaluation(final Model model, @PathVariable final int id) {
+    public String movieEvaluation(Model model, @PathVariable int id) {
         model.addAttribute("movie", movieService.getByIdFullInfo(id));
         model.addAttribute("evaluations", mueService.getMovieEvaluationDTOs(id));
         model.addAttribute("evalRequest", new EvaluationRequest());
@@ -51,7 +51,7 @@ public class MovieController {
     }
 
     @GetMapping("/movie/search")
-    public String movieSearch(final Model model) {
+    public String movieSearch(Model model) {
         model.addAttribute("allGenres", genreService.getAll());
         model.addAttribute("allCountries", countryService.getAll());
         return "/movie/search";
@@ -59,19 +59,19 @@ public class MovieController {
 
     @PostMapping("movie/genreChoose")
     @ResponseBody
-    public List<MovieDTO> searchMovieByGenre(@RequestParam(value = "genre", required = false) final String genre, final Model model) {
+    public List<MovieDTO> searchMovieByGenre(@RequestParam(value = "genre", required = false) String genre) {
         return movieService.getMoviesByGenreFullInfo(genre);
     }
 
     @PostMapping("movie/countryChoose")
     @ResponseBody
-    public List<MovieDTO> searchMovieByCountry(@RequestParam(value = "country", required = false) final String country, final Model model) {
+    public List<MovieDTO> searchMovieByCountry(@RequestParam(value = "country", required = false) String country) {
         return movieService.getMoviesByCountryFullInfo(country);
     }
 
     @PostMapping("movie/titleSearch")
     @ResponseBody
-    public List<MovieDTO> searchMovieByTitle(@RequestParam(value = "title") final String title, final Model model) {
+    public List<MovieDTO> searchMovieByTitle(@RequestParam(value = "title") String title) {
         return movieService.getMoviesByTitleFullInfo(title);
     }
 }

@@ -1,7 +1,6 @@
 package com.godeltech.service.impl;
 
 import com.godeltech.dto.RegistrationRequest;
-import com.godeltech.dto.UserDTO;
 import com.godeltech.entity.User;
 import com.godeltech.exception.NotUniqueLoginException;
 import com.godeltech.service.RegistrationService;
@@ -15,22 +14,21 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public final class RegistrationServiceImpl implements RegistrationService {
+public class RegistrationServiceImpl implements RegistrationService {
     private final UserService userService;
     private final RoleService roleService;
 
     @Override
-    public UserDTO registerUser(final RegistrationRequest registrationRequest) {
+    public void registerUser(RegistrationRequest registrationRequest) {
         User u = new User();
         validate(registrationRequest);
         u.setPassword(registrationRequest.getPassword());
         u.setUserName(registrationRequest.getLogin());
         u.setRole(roleService.getById(1));
         userService.save(u);
-        return new UserDTO(u.getId());
     }
 
-    private void validate(final RegistrationRequest registrationRequest) {
+    private void validate(RegistrationRequest registrationRequest) {
         final String login = registrationRequest.getLogin();
         List<User> users = userService.getAll();
         List<String> registeredUserLogins = users.stream().map(User::getUserName).collect(Collectors.toList());

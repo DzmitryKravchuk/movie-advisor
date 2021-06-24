@@ -15,11 +15,11 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public final class GenreServiceImpl implements GenreService {
+public class GenreServiceImpl implements GenreService {
     private final GenreRepository repository;
 
     @Override
-    public void save(final Genre entity) {
+    public void save(Genre entity) {
         log.info("GenreServiceImpl save {}", entity);
         Date currentDate = new Date();
         entity.setUpdated(currentDate);
@@ -30,21 +30,21 @@ public final class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(final Integer id) {
+    public Genre getById(Integer id) {
         log.info("GenreServiceImpl get by id: {}", id);
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
     }
 
     @Override
-    public Genre getGenreWithMoviesByGenreId(final Integer genreId) {
+    public Genre getGenreWithMoviesByGenreId(Integer genreId) {
         log.info("GenreServiceImpl getGenreWithMoviesByGenreId: {}", genreId);
         return repository.findOneById(genreId)
                 .orElseThrow(() -> new ResourceNotFoundException(" Object with index " + genreId + " not found"));
     }
 
     @Override
-    public Genre getGenreByGenreName(final String genreName) {
+    public Genre getGenreByGenreName(String genreName) {
         log.info(" getGenreByGenreName: {}", genreName);
         return repository.findOneByGenreName(genreName);
     }
@@ -57,13 +57,13 @@ public final class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void delete(final Integer id) {
+    public void delete(Integer id) {
         log.info("GenreServiceImpl delete by id: {}", id);
         repository.deleteById(id);
     }
 
     @Override
-    public void update(final Genre entity, final Integer id) {
+    public void update(Genre entity, Integer id) {
         log.info("GenreServiceImpl update with id: {}", id);
         getById(id);
         if (!entity.getId().equals(id)) {

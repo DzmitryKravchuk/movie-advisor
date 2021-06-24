@@ -16,12 +16,12 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public final class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void save(final User entity) {
+    public void save(User entity) {
         log.info("UserServiceImpl save {}", entity);
         Date currentDate = new Date();
         entity.setUpdated(currentDate);
@@ -33,7 +33,7 @@ public final class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(final Integer id) {
+    public User getById(Integer id) {
         log.info("UserServiceImpl get by id: {}", id);
         return repository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException(" Object with index " + id + " not found"));
@@ -46,13 +46,13 @@ public final class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(final Integer id) {
+    public void delete(Integer id) {
         log.info("UserServiceImpl delete by id: {}", id);
         repository.deleteById(id);
     }
 
     @Override
-    public void update(final User entity, final Integer id) {
+    public void update(User entity, Integer id) {
         log.info("EmployeeServiceImpl update with id: {}", id);
         getById(id);
         if (!entity.getId().equals(id)) {
