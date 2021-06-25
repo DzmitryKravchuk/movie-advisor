@@ -1,4 +1,4 @@
-package com.godeltech.controller;
+package com.godeltech.controller.mvc;
 
 import com.godeltech.dto.RegistrationRequest;
 import com.godeltech.service.RegistrationService;

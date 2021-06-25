@@ -28,13 +28,13 @@ public class MovieServiceTest extends AbstractCreationTest {
         movieService.delete(entity.getId());
     }
 
-     @Test
+    @Test
     public void findMoviesByTitleTest() {
         final String myFavoriteTitle = "myFavoriteTitle";
         for (int i = 0; i < 10; i++) {
             Movie movie = createNewMovieWithTitle(myFavoriteTitle);
-            createNewMue(movie.getId(), createNewUser("FirstUser"+i).getId(),1);
-            createNewMue(movie.getId(), createNewUser("SecondUser"+i).getId(),2);
+            createNewMue(movie.getId(), createNewUser("FirstUser" + i).getId(), 1);
+            createNewMue(movie.getId(), createNewUser("SecondUser" + i).getId(), 2);
         }
         List<MovieDTO> movieListFromBase = movieDtoService.getMoviesByTitleFullInfo("favorite");
         assertEquals(movieListFromBase.size(), 10);
@@ -46,24 +46,7 @@ public class MovieServiceTest extends AbstractCreationTest {
     }
 
     @Test
-    public void findMoviesByGenreTest1() {
-        Genre genre = createNewGenre("New Genre");
-        final String myFavorite = "Триллер";
-        genre.setGenreName(myFavorite);
-        genreService.update(genre, genre.getId());
-        for (int i = 0; i < 10; i++) {
-            Movie movie = createNewMovie();
-            Set<Genre> genres = movie.getGenres();
-            genres.add(genre);
-            movie.setGenres(genres);
-            movieService.update(movie, movie.getId());
-        }
-        Set<Movie> movieListFromBase = movieService.getMoviesWithGenreByGenreId(genre.getId());
-        assertEquals(movieListFromBase.size(), 10);
-    }
-
-    @Test
-    public void findMoviesByGenreTest2() {
+    public void findMoviesByGenreTest() {
         final String myFavorite = "XXX";
         Genre genre = createNewGenre(myFavorite);
         for (int i = 0; i < 10; i++) {
@@ -72,8 +55,8 @@ public class MovieServiceTest extends AbstractCreationTest {
             genres.add(genre);
             movie.setGenres(genres);
             movieService.update(movie, movie.getId());
-            createNewMue(movie.getId(), createNewUser("FirstUser"+i).getId(),1);
-            createNewMue(movie.getId(), createNewUser("SecondUser"+i).getId(),2);
+            createNewMue(movie.getId(), createNewUser("FirstUser" + i).getId(), 1);
+            createNewMue(movie.getId(), createNewUser("SecondUser" + i).getId(), 2);
         }
         List<MovieDTO> movieListFromBase = movieDtoService.getMoviesByGenreFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
@@ -84,7 +67,7 @@ public class MovieServiceTest extends AbstractCreationTest {
         assert (movieListFromBase.iterator().next().getRating() <= 5);
     }
 
-     @Test
+    @Test
     public void findMoviesByCountryTest() {
         final String myFavorite = "Беларусь";
         Country country = createNewCountry(myFavorite);
@@ -92,12 +75,12 @@ public class MovieServiceTest extends AbstractCreationTest {
             Movie movie = createNewMovie();
             movie.setCountry(country);
             movieService.update(movie, movie.getId());
-            createNewMue(movie.getId(), createNewUser("FirstUser"+i).getId(),1);
-            createNewMue(movie.getId(), createNewUser("SecondUser"+i).getId(),2);
+            createNewMue(movie.getId(), createNewUser("FirstUser" + i).getId(), 1);
+            createNewMue(movie.getId(), createNewUser("SecondUser" + i).getId(), 2);
         }
         List<MovieDTO> movieListFromBase = movieDtoService.getMoviesByCountryFullInfo(myFavorite);
         assertEquals(movieListFromBase.size(), 10);
-         assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
+        assertEquals(mueService.getMovieEvaluationDTOs(movieListFromBase.get(0).getId()).size(), 2);
         assertNotNull(movieListFromBase.get(0).getCountry());
         assert (movieListFromBase.get(0).getGenres().size() >= 1);
         assert (movieListFromBase.get(0).getRating() >= 0);
@@ -127,14 +110,14 @@ public class MovieServiceTest extends AbstractCreationTest {
         final Movie movie3 = createNewMovie();
         final User user1 = createNewUser("User1");
         final User user2 = createNewUser("User2");
-        createNewMue(movie1.getId(), user1.getId(),1);
-        createNewMue(movie1.getId(), user2.getId(),2);
+        createNewMue(movie1.getId(), user1.getId(), 1);
+        createNewMue(movie1.getId(), user2.getId(), 2);
 
-        createNewMue(movie2.getId(), user1.getId(),1);
-        createNewMue(movie2.getId(), user2.getId(),2);
+        createNewMue(movie2.getId(), user1.getId(), 1);
+        createNewMue(movie2.getId(), user2.getId(), 2);
 
-        createNewMue(movie3.getId(), user1.getId(),1);
-        createNewMue(movie3.getId(), user2.getId(),2);
+        createNewMue(movie3.getId(), user1.getId(), 1);
+        createNewMue(movie3.getId(), user2.getId(), 2);
 
         MovieDTO movieFromBase = movieDtoService.getByIdFullInfo(movie1.getId());
 

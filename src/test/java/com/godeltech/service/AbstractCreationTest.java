@@ -46,6 +46,8 @@ public class AbstractCreationTest {
     protected GenreService genreService;
     @Autowired
     protected MovieUserEvaluationService mueService;
+    @Autowired
+    protected MovieRatingService movieRatingService;
 
     @Before
     public void cleanBase() {

@@ -4,20 +4,21 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
-@Document(collection = "mue")
+@Document(collection = "#{@environment.getProperty('spring.data.mongodb.collection-name')}")
 @Data
 public class MovieUserEvaluation {
+
     @Id
     private String id;
     private Integer movieId;
     private Integer userId;
     private int satisfactionGrade;
     private String review;
-    private Date created;
-    private Date updated;
+    private LocalDate created;
+    private LocalDate updated;
 
     @Override
     public boolean equals(Object o) {

@@ -1,4 +1,4 @@
-package com.godeltech.controller;
+package com.godeltech.controller.mvc;
 
 import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.service.MovieUserEvaluationService;
@@ -18,6 +18,6 @@ public final class UserController {
     @PostMapping("/user/evaluateMovie")
     public String evaluation(@ModelAttribute("evalRequest") @Valid final EvaluationRequest evalRequest, final Model model) {
         mueService.save(evalRequest);
-        return "redirect:/movie/movies";
+        return "redirect:/movie/movies/page/1";
     }
 }

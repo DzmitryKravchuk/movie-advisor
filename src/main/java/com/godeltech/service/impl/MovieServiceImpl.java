@@ -13,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +29,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void save(Movie entity) {
         log.info("MovieServiceImpl save {}", entity);
-        Date currentDate = new Date();
+        LocalDate currentDate = LocalDate.now();
         entity.setUpdated(currentDate);
         if (entity.getId() == null) {
             entity.setCreated(currentDate);

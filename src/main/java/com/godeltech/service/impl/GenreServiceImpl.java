@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -21,7 +21,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public void save(Genre entity) {
         log.info("GenreServiceImpl save {}", entity);
-        Date currentDate = new Date();
+        LocalDate currentDate = LocalDate.now();
         entity.setUpdated(currentDate);
         if (entity.getId() == null) {
             entity.setCreated(currentDate);

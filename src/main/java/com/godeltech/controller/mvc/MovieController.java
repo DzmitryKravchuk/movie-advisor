@@ -1,4 +1,4 @@
-package com.godeltech.controller;
+package com.godeltech.controller.mvc;
 
 import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.dto.MovieDTO;

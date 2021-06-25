@@ -1,4 +1,4 @@
-package com.godeltech.controller;
+package com.godeltech.controller.mvc;
 
 import com.godeltech.service.UserService;
 import lombok.RequiredArgsConstructor;

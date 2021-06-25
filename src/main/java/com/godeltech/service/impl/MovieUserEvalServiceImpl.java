@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +54,7 @@ public class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
                     + ", must be between 0 and " + MAX_GRADE);
         }
 
-        Date currentDate = new Date();
+        LocalDate currentDate = LocalDate.now();
         entity.setUpdated(currentDate);
         if (entity.getId() == null) {
             entity.setCreated(currentDate);

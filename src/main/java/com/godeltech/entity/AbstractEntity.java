@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
@@ -19,10 +19,10 @@ public class AbstractEntity {
     private Integer id;
 
     @Column(updatable = false)
-    private Date created;
+    private LocalDate created;
 
     @Column
-    private Date updated;
+    private LocalDate updated;
 
     @Override
     public boolean equals(final Object o) {

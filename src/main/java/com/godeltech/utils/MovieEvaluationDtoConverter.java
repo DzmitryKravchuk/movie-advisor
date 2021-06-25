@@ -4,8 +4,8 @@ import com.godeltech.dto.EvaluationRequest;
 import com.godeltech.dto.MovieEvaluationDTO;
 import com.godeltech.entity.MovieUserEvaluation;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class MovieEvaluationDtoConverter {
 
@@ -28,8 +28,8 @@ public class MovieEvaluationDtoConverter {
         return mue;
     }
 
-    private static String convertToSimpleDateFormat(final Date updated) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        return formatter.format(updated);
+    private static String convertToSimpleDateFormat(final LocalDate updated) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return updated.format(formatter);
     }
 }
