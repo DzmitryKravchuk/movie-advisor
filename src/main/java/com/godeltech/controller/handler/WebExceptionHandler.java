@@ -1,5 +1,6 @@
 package com.godeltech.controller.handler;
 
+import com.godeltech.dto.ErrorResponse;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.NotUniqueLoginException;
 import com.godeltech.exception.PasswordIncorrectException;
@@ -17,25 +18,25 @@ public final class WebExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public String handleNotFoundException(final RuntimeException e) {
+    public ErrorResponse handleNotFoundException(final RuntimeException e) {
         log.error(e.getMessage(), e);
-        return e.getMessage();
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler({UpdateNotMatchIdException.class,
             NotUniqueLoginException.class, PasswordIncorrectException.class,
             MovieUserEvaluationPersistenceException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public String handleBadRequestException(final RuntimeException e) {
+    public ErrorResponse handleBadRequestException(final RuntimeException e) {
         log.error(e.getMessage(), e);
-        return e.getMessage();
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleUncaughtException(final Exception e) {
+    public ErrorResponse handleUncaughtException(final Exception e) {
         log.error("Something went wrong", e);
-        return "Something went wrong";
+        return new ErrorResponse("Something went wrong");
     }
 
 }

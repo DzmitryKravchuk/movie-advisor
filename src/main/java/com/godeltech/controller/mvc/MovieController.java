@@ -44,7 +44,7 @@ public class MovieController {
 
     @GetMapping("/movie/review{id}")
     public String movieEvaluation(Model model, @PathVariable int id) {
-        model.addAttribute("movie", movieService.getByIdFullInfo(id));
+        model.addAttribute("movie", movieService.getById(id));
         model.addAttribute("evaluations", mueService.getMovieEvaluationDTOs(id));
         model.addAttribute("evalRequest", new EvaluationRequest());
         return "/movie/review";
@@ -60,18 +60,18 @@ public class MovieController {
     @PostMapping("movie/genreChoose")
     @ResponseBody
     public List<MovieDTO> searchMovieByGenre(@RequestParam(value = "genre", required = false) String genre) {
-        return movieService.getMoviesByGenreFullInfo(genre);
+        return movieService.getByGenre(genre);
     }
 
     @PostMapping("movie/countryChoose")
     @ResponseBody
     public List<MovieDTO> searchMovieByCountry(@RequestParam(value = "country", required = false) String country) {
-        return movieService.getMoviesByCountryFullInfo(country);
+        return movieService.getByCountry(country);
     }
 
     @PostMapping("movie/titleSearch")
     @ResponseBody
     public List<MovieDTO> searchMovieByTitle(@RequestParam(value = "title") String title) {
-        return movieService.getMoviesByTitleFullInfo(title);
+        return movieService.getByTitle(title);
     }
 }

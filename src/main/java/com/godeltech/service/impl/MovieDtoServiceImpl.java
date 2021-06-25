@@ -26,7 +26,7 @@ public class MovieDtoServiceImpl implements MovieDtoService {
     private final MovieRatingService movieRatingService;
 
     @Override
-    public MovieDTO getByIdFullInfo(Integer id) {
+    public MovieDTO getById(Integer id) {
         log.info("getByIdFullInfo by id: {}", id);
         Movie entity = movieService.getByIdContainsGenreCountry(id);
         entity.setAvgSatisfactionGrade(movieRatingService.getRatingByMovieId(id).getRating());
@@ -34,7 +34,7 @@ public class MovieDtoServiceImpl implements MovieDtoService {
     }
 
     @Override
-    public List<MovieDTO> getAllFullInfo() {
+    public List<MovieDTO> getAll() {
         log.info("getAllFullInfo()");
         List<Movie> justMoviesWithCountryAndGenre = movieService.getAllWithCountryAndGenre();
         List<Movie> moviesWithRatings = setRatingsForMovies(justMoviesWithCountryAndGenre);
@@ -42,7 +42,7 @@ public class MovieDtoServiceImpl implements MovieDtoService {
     }
 
     @Override
-    public List<MovieDTO> getMoviesByTitleFullInfo(String favorite) {
+    public List<MovieDTO> getByTitle(String favorite) {
         log.info("getMoviesByTitleFullInfo: {}", favorite);
         List<Movie> justMoviesByTitle = movieService.getAllByTitleFullInfo(favorite);
         List<Movie> moviesWithRatings = setRatingsForMovies(justMoviesByTitle);
@@ -50,7 +50,7 @@ public class MovieDtoServiceImpl implements MovieDtoService {
     }
 
     @Override
-    public List<MovieDTO> getMoviesByGenreFullInfo(String favorite) {
+    public List<MovieDTO> getByGenre(String favorite) {
         log.info("getMoviesByGenreFullInfo: {}", favorite);
         List<Movie> justMoviesByGenre = movieService.getAllByGenreFullInfo(favorite);
         List<Movie> moviesWithRatings = setRatingsForMovies(justMoviesByGenre);
@@ -58,7 +58,7 @@ public class MovieDtoServiceImpl implements MovieDtoService {
     }
 
     @Override
-    public List<MovieDTO> getMoviesByCountryFullInfo(String favorite) {
+    public List<MovieDTO> getByCountry(String favorite) {
         log.info("MovieServiceImpl getMoviesWithGenreAndCountryByCountry: {}", favorite);
         Set<Movie> movieSet = movieService.getAllByCountryFullInfo(favorite);
         List<Movie> justMoviesByCountry = new ArrayList<>(movieSet);
@@ -69,7 +69,13 @@ public class MovieDtoServiceImpl implements MovieDtoService {
     private List<Movie> setRatingsForMovies(List<Movie> movieList) {
         Map<Integer, MovieRating> ratingsMap = movieRatingService.getAll().stream()
                 .collect(Collectors.toMap(MovieRating::getMovieId, Function.identity()));
-        movieList.forEach(m->m.setAvgSatisfactionGrade(ratingsMap.get(m.getId()).getRating()));
+        movieList.forEach(m -> m.setAvgSatisfactionGrade(getRating(ratingsMap, m)));
         return movieList;
+    }
+
+    private Integer getRating(Map<Integer, MovieRating> ratingsMap, Movie m) {
+        if (ratingsMap.containsKey(m.getId())) {
+            return ratingsMap.get(m.getId()).getRating();
+        } else return 0;
     }
 }

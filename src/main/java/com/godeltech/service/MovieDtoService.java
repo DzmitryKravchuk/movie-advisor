@@ -5,14 +5,14 @@ import com.godeltech.dto.MovieDTO;
 import java.util.List;
 
 public interface MovieDtoService {
-    MovieDTO getByIdFullInfo(Integer id);
+    MovieDTO getById(Integer id);
 
-    List<MovieDTO> getAllFullInfo();
+    List<MovieDTO> getAll();
 
-    List<MovieDTO> getMoviesByTitleFullInfo(String favorite);
+    List<MovieDTO> getByTitle(String favorite);
 
-    List<MovieDTO> getMoviesByGenreFullInfo(String favorite);
+    List<MovieDTO> getByGenre(String favorite);
 
-    List<MovieDTO> getMoviesByCountryFullInfo(String favorite);
+    List<MovieDTO> getByCountry(String favorite);
 
 }
