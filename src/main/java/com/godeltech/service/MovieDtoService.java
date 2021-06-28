@@ -1,18 +1,24 @@
 package com.godeltech.service;
 
-import com.godeltech.dto.MovieDTO;
+import com.godeltech.dto.MovieRequest;
+import com.godeltech.dto.MovieResponse;
 
 import java.util.List;
 
 public interface MovieDtoService {
-    MovieDTO getById(Integer id);
+    MovieResponse getById(Integer id);
 
-    List<MovieDTO> getAll();
+    MovieResponse getMovieWithEvaluationsById (Integer id);
 
-    List<MovieDTO> getByTitle(String favorite);
+    List<MovieResponse> getAll();
 
-    List<MovieDTO> getByGenre(String favorite);
+    List<MovieResponse> getByTitle(String favorite);
 
-    List<MovieDTO> getByCountry(String favorite);
+    List<MovieResponse> getByGenre(String favorite);
 
+    List<MovieResponse> getByCountry(String favorite);
+
+    void saveNewMovie (MovieRequest request);
+
+    void update(Integer id, MovieResponse res);
 }

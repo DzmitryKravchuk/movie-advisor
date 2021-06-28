@@ -1,21 +1,26 @@
 package com.godeltech.service.impl;
 
-import com.godeltech.dto.EvaluationRequest;
-import com.godeltech.dto.MovieEvaluationDTO;
+import com.godeltech.dto.MovieEvaluationRequest;
+import com.godeltech.dto.MovieEvaluationResponse;
 import com.godeltech.entity.MovieUserEvaluation;
+import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.UpdateNotMatchIdException;
 import com.godeltech.repository.MovieUserEvaluationRepository;
 import com.godeltech.security.CustomUserDetailsService;
+import com.godeltech.service.AuthenticationService;
 import com.godeltech.service.MovieService;
 import com.godeltech.service.MovieUserEvaluationService;
 import com.godeltech.service.UserService;
 import com.godeltech.utils.MovieEvaluationDtoConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,12 +33,35 @@ public class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
     private final UserService userService;
     private final MovieService movieService;
     private final CustomUserDetailsService userDetailsService;
+    private final AuthenticationService authenticationService;
+
+
+    private User getLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return userDetailsService.findByLogin(currentPrincipalName);
+    }
 
     @Override
-    public void save(EvaluationRequest entityRequest) {
-        log.info("MovieUserEvalServiceImpl save {}", entityRequest);
+    public void save(MovieEvaluationRequest entityRequest, Integer userId) {
+        log.info(" save {}", entityRequest);
+        // Integer userId = getLoggedUser().getId();
         MovieUserEvaluation entity = MovieEvaluationDtoConverter
-                .convertFromRequest(entityRequest, userDetailsService.findByLogin(entityRequest.getUserName()).getId());
+                .convertFromRequest(entityRequest, userId);
+        validate(entity);
+        setCreatedUpdated(entity);
+        repository.save(entity);
+    }
+
+    private void setCreatedUpdated(MovieUserEvaluation entity) {
+        LocalDate currentDate = LocalDate.now();
+        entity.setUpdated(currentDate);
+        if (entity.getId() == null) {
+            entity.setCreated(currentDate);
+        }
+    }
+
+    private void validate(MovieUserEvaluation entity) {
         if (!checkIfMovieExists(entity)) {
             throw new MovieUserEvaluationPersistenceException(" Movie with movieID: " + entity.getMovieId()
                     + " doesn't exist");
@@ -53,12 +81,16 @@ public class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
             throw new MovieUserEvaluationPersistenceException(" Input SatisfactionGrade: " + entity.getSatisfactionGrade()
                     + ", must be between 0 and " + MAX_GRADE);
         }
+    }
 
-        LocalDate currentDate = LocalDate.now();
-        entity.setUpdated(currentDate);
-        if (entity.getId() == null) {
-            entity.setCreated(currentDate);
-        }
+    @Override
+    public void saveWithToken(MovieEvaluationRequest request, HttpServletRequest servletRequest) {
+        log.info(" saveWithToken {}", request);
+        User user = authenticationService.getUserFromToken(servletRequest);
+        MovieUserEvaluation entity = MovieEvaluationDtoConverter
+                .convertFromRequest(request, user.getId());
+        validate(entity);
+        setCreatedUpdated(entity);
         repository.save(entity);
     }
 
@@ -88,16 +120,17 @@ public class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
     }
 
     @Override
-    public void update(EvaluationRequest entityRequest, String id) {
+    public void update(MovieEvaluationRequest entityRequest, String id, HttpServletRequest servletRequest) {
         log.info("MovieUserEvalServiceImpl update with id: {}", id);
+        User user = authenticationService.getUserFromToken(servletRequest);
         MovieUserEvaluation entity = MovieEvaluationDtoConverter
-                .convertFromRequest(entityRequest, userDetailsService.findByLogin(entityRequest.getUserName()).getId());
+                .convertFromRequest(entityRequest, user.getId());
         MovieUserEvaluation entityFromBase = getById(id);
         if (!entity.getUserId().equals(entityFromBase.getUserId())
                 || !entity.getMovieId().equals(entityFromBase.getMovieId())) {
             throw new UpdateNotMatchIdException(" Object from request doesnt match with entity from base with id ");
         }
-        save(entityRequest);
+        saveWithToken(entityRequest, servletRequest);
     }
 
     @Override
@@ -117,7 +150,7 @@ public class MovieUserEvalServiceImpl implements MovieUserEvaluationService {
     }
 
     @Override
-    public List<MovieEvaluationDTO> getMovieEvaluationDTOs(Integer movieId) {
+    public List<MovieEvaluationResponse> getMovieEvaluationDTOs(Integer movieId) {
         log.info("getMovieEvaluationDTOs by movieId: {}", movieId);
         return getAllByMovieId(movieId).stream()
                 .map(mue -> MovieEvaluationDtoConverter.convertToDTO(mue,

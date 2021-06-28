@@ -4,7 +4,6 @@ import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
-import com.godeltech.exception.ResourceNotFoundException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,7 +40,7 @@ public class MovieUserEvaluationServiceTest extends AbstractCreationTest {
 
     @Test
     public void throwExceptionTest() {
-        assertThrows(ResourceNotFoundException.class, () -> createNewMue(-1, 1, 1));
+        assertThrows(MovieUserEvaluationPersistenceException.class, () -> createNewMue(-1, 1, 1));
     }
 
     @Test

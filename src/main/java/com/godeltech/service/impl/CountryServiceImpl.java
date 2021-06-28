@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.checkerframework.checker.nullness.Opt.orElseThrow;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -69,5 +71,12 @@ public class CountryServiceImpl implements CountryService {
     public void deleteAll() {
         log.info("deleteAll");
         repository.deleteAll();
+    }
+
+    @Override
+    public Country getByCountryName(String countryName) {
+        log.info(" getByCountryName: {}",countryName);
+        return repository.findByCountryName(countryName)
+                .orElseThrow(() -> new ResourceNotFoundException(" Object with name " + countryName + " not found"));
     }
 }

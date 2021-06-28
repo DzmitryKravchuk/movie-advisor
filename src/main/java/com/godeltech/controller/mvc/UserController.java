@@ -1,6 +1,6 @@
 package com.godeltech.controller.mvc;
 
-import com.godeltech.dto.EvaluationRequest;
+import com.godeltech.dto.MovieEvaluationRequest;
 import com.godeltech.service.MovieUserEvaluationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,8 +16,8 @@ public final class UserController {
     private final MovieUserEvaluationService mueService;
 
     @PostMapping("/user/evaluateMovie")
-    public String evaluation(@ModelAttribute("evalRequest") @Valid final EvaluationRequest evalRequest, final Model model) {
-        mueService.save(evalRequest);
+    public String evaluation(@ModelAttribute("evalRequest") @Valid final MovieEvaluationRequest evalRequest, final Model model) {
+//        mueService.save(evalRequest);
         return "redirect:/movie/movies/page/1";
     }
 }

@@ -1,16 +1,15 @@
 package com.godeltech.dto;
 
 import lombok.Data;
+
 import java.util.Set;
 
 @Data
-public class MovieDTO {
-    private Integer id;
+public class MovieRequest {
     private String title;
     private int releaseYear;
     private String director;
-    private String country;
-    private Set<String> genres;
+    private Integer countryId;
+    private Set<Integer> genreIds;
     private String description;
-    private int rating;
 }

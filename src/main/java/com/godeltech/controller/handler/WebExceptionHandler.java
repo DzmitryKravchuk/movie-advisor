@@ -5,6 +5,7 @@ import com.godeltech.exception.MovieUserEvaluationPersistenceException;
 import com.godeltech.exception.NotUniqueLoginException;
 import com.godeltech.exception.PasswordIncorrectException;
 import com.godeltech.exception.ResourceNotFoundException;
+import com.godeltech.exception.TokenAuthException;
 import com.godeltech.exception.UpdateNotMatchIdException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public final class WebExceptionHandler {
 
     @ExceptionHandler({UpdateNotMatchIdException.class,
             NotUniqueLoginException.class, PasswordIncorrectException.class,
-            MovieUserEvaluationPersistenceException.class})
+            MovieUserEvaluationPersistenceException.class, TokenAuthException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequestException(final RuntimeException e) {
         log.error(e.getMessage(), e);

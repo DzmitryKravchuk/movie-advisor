@@ -1,6 +1,6 @@
 package com.godeltech.service.impl;
 
-import com.godeltech.dto.MovieDTO;
+import com.godeltech.dto.MovieResponse;
 import com.godeltech.entity.Movie;
 import com.godeltech.repository.PageableMovieRepository;
 import com.godeltech.service.MovieUserEvaluationService;
@@ -22,12 +22,12 @@ public class PageableMovieServiceImpl implements PageableMovieService {
     private final MovieUserEvaluationService mueService;
 
     @Override
-    public Page<MovieDTO> listAll(int pageNum) {
+    public Page<MovieResponse> listAll(int pageNum) {
         Page<Movie> movies = findAll(pageNum);
         movies.forEach(m -> m.setAvgSatisfactionGrade(
                 AvgSatisfactionGradeCalc.calculate(
                         mueService.getAllByMovieId(m.getId()))));
-        return movies.map(MovieDtoConverter::convertToDTO);
+        return movies.map(MovieDtoConverter::convertToResponse);
     }
 
     private Page<Movie> findAll(int pageNum) {

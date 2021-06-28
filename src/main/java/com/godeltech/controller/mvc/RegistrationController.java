@@ -1,7 +1,7 @@
 package com.godeltech.controller.mvc;
 
 import com.godeltech.dto.RegistrationRequest;
-import com.godeltech.service.RegistrationService;
+import com.godeltech.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 public final class RegistrationController {
-    private final RegistrationService registrationService;
+    private final AuthenticationService registrationService;
 
     @GetMapping("/registration")
     public String registration(final Model model) {

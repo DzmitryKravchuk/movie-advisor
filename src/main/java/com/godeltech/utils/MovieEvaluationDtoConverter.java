@@ -1,7 +1,7 @@
 package com.godeltech.utils;
 
-import com.godeltech.dto.EvaluationRequest;
-import com.godeltech.dto.MovieEvaluationDTO;
+import com.godeltech.dto.MovieEvaluationRequest;
+import com.godeltech.dto.MovieEvaluationResponse;
 import com.godeltech.entity.MovieUserEvaluation;
 
 import java.time.LocalDate;
@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 public class MovieEvaluationDtoConverter {
 
-    public static MovieEvaluationDTO convertToDTO(final MovieUserEvaluation mue, final String userName) {
-        MovieEvaluationDTO dto = new MovieEvaluationDTO();
+    public static MovieEvaluationResponse convertToDTO(final MovieUserEvaluation mue, final String userName) {
+        MovieEvaluationResponse dto = new MovieEvaluationResponse();
         dto.setReview(mue.getReview());
         dto.setReviewDate(convertToSimpleDateFormat(mue.getUpdated()));
         dto.setSatisfactionGrade(mue.getSatisfactionGrade());
@@ -19,7 +19,7 @@ public class MovieEvaluationDtoConverter {
         return dto;
     }
 
-    public static MovieUserEvaluation convertFromRequest(final EvaluationRequest evalRequest, final Integer userId) {
+    public static MovieUserEvaluation convertFromRequest(final MovieEvaluationRequest evalRequest, final Integer userId) {
         MovieUserEvaluation mue = new MovieUserEvaluation();
         mue.setReview(evalRequest.getReview());
         mue.setSatisfactionGrade(evalRequest.getSatisfactionGrade());

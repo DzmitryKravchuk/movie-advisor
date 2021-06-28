@@ -18,4 +18,6 @@ public interface CountryService {
     void update(Country entity, Integer id);
 
     void deleteAll();
+
+    Country getByCountryName(String country);
 }
