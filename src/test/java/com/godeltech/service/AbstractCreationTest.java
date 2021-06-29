@@ -10,19 +10,16 @@ import com.godeltech.entity.User;
 import com.godeltech.exception.NotUniqueLoginException;
 import com.godeltech.exception.ResourceNotFoundException;
 
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class AbstractCreationTest {
     @Autowired
@@ -42,7 +39,7 @@ public class AbstractCreationTest {
     @Autowired
     protected MovieRatingService movieRatingService;
 
-    @Before
+    @BeforeEach
     public void cleanBase() {
         mueService.deleteAll();
         movieService.deleteAll();
@@ -70,9 +67,34 @@ public class AbstractCreationTest {
         return entity;
     }
 
+    protected User createNewAdmin(String userName) {
+        final User entity = new User();
+        entity.setUserName(userName);
+        entity.setPassword(entity.getUserName());
+        try {
+            entity.setRole(roleService.getByName("ROLE_ADMIN"));
+        } catch (ResourceNotFoundException e) {
+            entity.setRole(createAdminRole());
+        }
+        try {
+            userService.save(entity);
+        } catch (NotUniqueLoginException e) {
+            entity.setUserName(entity.getUserName() + "unique");
+            userService.save(entity);
+        }
+        return entity;
+    }
+
     private Role createUserRole() {
         Role userRole = new Role();
         userRole.setRoleName("ROLE_USER");
+        roleService.save(userRole);
+        return userRole;
+    }
+
+    private Role createAdminRole() {
+        Role userRole = new Role();
+        userRole.setRoleName("ROLE_ADMIN");
         roleService.save(userRole);
         return userRole;
     }

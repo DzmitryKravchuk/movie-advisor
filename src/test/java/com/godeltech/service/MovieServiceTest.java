@@ -7,7 +7,7 @@ import com.godeltech.entity.Movie;
 import com.godeltech.entity.User;
 import com.godeltech.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;

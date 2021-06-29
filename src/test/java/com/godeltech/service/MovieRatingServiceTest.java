@@ -3,7 +3,7 @@ package com.godeltech.service;
 import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieRating;
 import com.godeltech.entity.User;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

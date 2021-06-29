@@ -4,7 +4,8 @@ import com.godeltech.entity.Movie;
 import com.godeltech.entity.MovieUserEvaluation;
 import com.godeltech.entity.User;
 import com.godeltech.exception.MovieUserEvaluationPersistenceException;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
