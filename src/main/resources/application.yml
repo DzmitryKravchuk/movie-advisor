@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8080}
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/movie_pg}
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/movie_pg}
+      database: movie_mg
+      collection-name: mue
+  mvc:
+    view:
+      prefix: /WEB-INF/pages/
+      suffix: .jsp
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    contexts: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true

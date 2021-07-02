@@ -1,0 +1,147 @@
+databaseChangeLog:
+  - changeSet:
+      id: addTable-1
+      author: app
+      changes:
+        - createTable:
+            tableName: movie
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: release_year
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: director
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: date
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: addTable-2
+      author: app
+      changes:
+        - createTable:
+            tableName: user_account
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: date
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: addTable-3
+      author: app
+      changes:
+        - createTable:
+            tableName: genre
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: genre_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: date
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: addTable-4
+      author: app
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: date
+                  constraints:
+                    nullable: false

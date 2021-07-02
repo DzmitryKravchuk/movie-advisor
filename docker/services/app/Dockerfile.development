@@ -1,0 +1,4 @@
+FROM postgres:12-alpine
+WORKDIR /usr/local/app
+ADD movie-advisor-1.0-SNAPSHOT.jar app.jar
+CMD java -jar ./app.jar

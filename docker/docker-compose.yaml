@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres:
+    build:
+      context: services/postgres
+      dockerfile: Dockerfile.development
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=movie_pg
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+  app:
+    build:
+      context: services/app
+      dockerfile: Dockerfile.development
+    environment:
+      - PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/movie_pg
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo/movie_mg
+    image: 'my-java-app'
+    ports:
+      - 8090:8090
+    depends_on:
+      - postgres
+      - mongo
+
+  mongo:
+    build:
+      context: services/mongo
+      dockerfile: Dockerfile.development
+    image: 'mongo'
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - "db-data:/var/lib/mongo/data"
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+
+volumes:
+  db-data:
