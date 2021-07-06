@@ -21,9 +21,9 @@ services:
       - PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/movie_pg
       - SPRING_DATA_MONGODB_URI=mongodb://mongo/movie_mg
-    image: 'my-java-app'
+    image: 'app'
     ports:
-      - 8090:8090
+      - 8080:8080
     depends_on:
       - postgres
       - mongo

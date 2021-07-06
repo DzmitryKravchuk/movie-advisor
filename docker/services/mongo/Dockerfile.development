@@ -1,2 +1,2 @@
-FROM dockerfile/ubuntu
+FROM mongo
 EXPOSE 27017

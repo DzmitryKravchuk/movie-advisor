@@ -145,3 +145,127 @@ databaseChangeLog:
                   type: date
                   constraints:
                     nullable: false
+  - changeSet:
+      id: addTable-5
+      author: app
+      changes:
+        - createTable:
+            tableName: movie_genre
+            columns:
+              - column:
+                  name: movie_id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: genre_id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+  - changeSet:
+      id: addTable-6
+      author: app
+      changes:
+        - createTable:
+            tableName: country
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: country_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: date
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: addForeignKeyConstraint-1
+      author: app
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: country_id
+            baseTableCatalogName: movie_pg
+            baseTableName: movie
+            baseTableSchemaName: public
+            constraintName: movie_fk0
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: movie_pg
+            referencedTableName: country
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint-2
+      author: app
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableCatalogName: movie_pg
+            baseTableName: user_account
+            baseTableSchemaName: public
+            constraintName: user_account_fk0
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: movie_pg
+            referencedTableName: role
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint-3
+      author: app
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: movie_id
+            baseTableCatalogName: movie_pg
+            baseTableName: movie_genre
+            baseTableSchemaName: public
+            constraintName: movie_genre_fk0
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: movie_pg
+            referencedTableName: movie
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint-4
+      author: app
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: genre_id
+            baseTableCatalogName: movie_pg
+            baseTableName: movie_genre
+            baseTableSchemaName: public
+            constraintName: movie_genre_fk1
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: movie_pg
+            referencedTableName: genre
+            referencedTableSchemaName: public
+            validate: true

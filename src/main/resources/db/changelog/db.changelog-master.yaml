@@ -2,3 +2,5 @@ databaseChangeLog:
   - encoding: UTF-8
   - includeAll:
       path: db/changelog/db/
+  - includeAll:
+      path: db/changelog/data/

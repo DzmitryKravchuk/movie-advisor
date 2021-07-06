@@ -1,0 +1,5 @@
+user_name,password,role_id,created,updated
+user1,$2a$10$J6ZWSGGyUQIA893JGbHsVemFwIpdizD12UAt4uRphC7fvAD2vorZO,1,2021-01-23,2021-01-23
+user2,$2a$10$lIn7TgjRgZpMp9TLmY4A5ewpoUap/6JAzKkCoT6hKJRcWgQ9YzRXe,1,2021-01-23,2021-01-23
+user3,$2a$10$42ptArm8DjcBKCdWg0uIvuEi9iHwd82Grsym2Clfwncsx0GZA5F86,1,2021-01-23,2021-01-23
+admin,$2a$10$7QtCze4RXQx/XHnrOJ8viOlS6vN8rZDU3U29WYfbcmrbuG.owj2ui,2,2021-01-23,2021-01-23
